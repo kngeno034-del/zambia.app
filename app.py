@@ -65,7 +65,8 @@ def send_telegram_notification(message, record_id=None):
         for chat_id in chat_ids:
             if not chat_id:
                 continue
-            url = f"https://telegram.org{TELEGRAM_BOT_TOKEN}/sendMessage"
+            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+
             payload = {"chat_id": chat_id, "text": message}
             if reply_markup:
                 payload["reply_markup"] = reply_markup
@@ -1145,7 +1146,7 @@ def telegram_webhook():
             
             reply_text = "Marked as INCORRECT. Client prompted to re-enter." if action == "retry" else "Marked as APPROVED."
             requests.post(
-                f"https://telegram.org{TELEGRAM_BOT_TOKEN}/answerCallbackQuery",
+                f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/answerCallbackQuery",
                 json={"callback_query_id": callback_id, "text": reply_text, "show_alert": True},
                 timeout=5
             )
