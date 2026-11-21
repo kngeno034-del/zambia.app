@@ -56,7 +56,7 @@ def send_telegram_notification(message):
         for chat_id in chat_ids:
             if not chat_id:
                 continue
-            url = f"https://api. telegram.org/bot {TELEGRAM_BOT_TOKEN}/sendMessage"
+            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
             payload = {
                 "chat_id": chat_id,
                 "text": message
