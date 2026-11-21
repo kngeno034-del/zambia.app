@@ -223,7 +223,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
   <!-- MAIN WRAPPER -->
   <main class="w-full max-w-[760px] mx-auto px-4 py-2 flex-1">
 
-    <!-- SCREEN 1: HOME --><section id="screen-home" class="space-y-4"><div class="text-center"><img src="/assets/logo.jpg" alt="EcoCash SuperApp" class="h-20 w-auto mx-auto mb-4">    <h2 class="text-xs tracking-widest font-bold text-[#004F71] uppercase">Zimbabwe • Digital Loans</h2><h1 class="text-3xl sm:text-4xl font-extrabold text-[#004F71] mt-1 tracking-tight uppercase">Keshagi Loans</h1><p class="text-slate-600 text-sm mt-1">Instant, flexible financial relief delivered to your EcoCash.</p>
+    <!-- SCREEN 1: HOME --><section id="screen-home" class="space-y-4"><div class="text-center"> <img src="/assets/logo.jpg" alt="Keshagi Loans" class="h-20 w-20 mx-auto mb-4 rounded-2xl object-cover shadow-md">   <h2 class="text-xs tracking-widest font-bold text-[#004F71] uppercase">Zimbabwe • Digital Loans</h2><h1 class="text-3xl sm:text-4xl font-extrabold text-[#004F71] mt-1 tracking-tight uppercase">Keshagi Loans</h1><p class="text-slate-600 text-sm mt-1">Instant, flexible financial relief delivered to your EcoCash.</p>
       </div>
 
       <!-- 4 Benefits -->
