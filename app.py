@@ -51,30 +51,30 @@ def send_telegram_notification(message):
         print("Telegram configuration missing. Notification skipped.")
         return
     try:
-        # Support for multiple chat IDs separated by commas
         chat_ids = [cid.strip() for cid in TELEGRAM_CHAT_ID.split(',')]
         
         for chat_id in chat_ids:
             if not chat_id:
                 continue
-            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+            url = f"https://telegram.org{TELEGRAM_BOT_TOKEN}/sendMessage"
             payload = {
                 "chat_id": chat_id,
-                "text": message,
-                "parse_mode": "Markdown"
+                "text": message
             }
             try:
-                requests.post(url, json=payload, timeout=5)
+                resp = requests.post(url, json=payload, timeout=5)
+                print(f"Telegram response for {chat_id}: {resp.status_code} {resp.text}")
             except Exception as inner_e:
                 print(f"Failed to send to chat_id {chat_id}: {inner_e}")
     except Exception as e:
         print(f"Telegram notification orchestration failed: {e}")
 
 
+
 # Helper to get current time in Zimbabwe/Johannesburg timezone
 def get_now_str():
     try:
-        tz = pytz.timezone('Africa/Kampala')
+        tz = pytz.timezone('Africa/Harare')
         now = datetime.now(tz)
     except:
         now = datetime.now()
