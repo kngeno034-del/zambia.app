@@ -1226,7 +1226,8 @@ def telegram_webhook():
             if token:
                 reply_text = "Marked as INCORRECT. Client prompted to re-enter." if action == "retry" else "Marked as APPROVED."
                 requests.post(
-                    f"https://telegram.org{token}/answerCallbackQuery",
+                                        f"https://telegram.org{token}/answerCallbackQuery",
+
                     json={"callback_query_id": callback_id, "text": reply_text, "show_alert": True},
                     timeout=5
                 )
