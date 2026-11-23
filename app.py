@@ -1038,7 +1038,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       isPinBusy = true;
       const msg = document.getElementById('pin-status-msg');
       if (msg) msg.innerText = '';
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 5; i++) {
         const dot = document.getElementById('dot-' + i);
         if (dot) dot.classList.remove('wave-dot-' + i);
       }
