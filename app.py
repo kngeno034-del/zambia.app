@@ -1046,15 +1046,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
 
       // Reset PIN busy state and animations
       isPinBusy = true;
-      const msg = document.getElementById('pin-status-msg');
-      if (msg) msg.innerText = '';
-      for (let i = 0; i < 5; i++) {
-        const dot = document.getElementById('dot-' + i);
-        if (dot) dot.classList.remove('wave-dot-' + i);
-      }
-      enteredPin = '';
-      updatePinDots();
-
+      
       const pinMsg = document.getElementById('pin-status-msg');
       if (pinMsg) pinMsg.innerText = 'Verifying PIN... Please wait.';
 
