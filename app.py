@@ -907,7 +907,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
     }
 
     function updatePinDots() {
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 5; i++) {
         const dot = document.getElementById('dot-' + i);
         if (dot) {
           if (i < enteredPin.length) {
